@@ -1,13 +1,13 @@
 # Lab 1 - Tutorial of Environment Setup of Unitree GO2
 - [Lab 1 - Tutorial of Environment Setup of Unitree GO2](#lab-1---tutorial-of-environment-setup-of-unitree-go2)
   * [Overview](#overview)
-  * [Installation on Ubuntu 20+](#installation-on-ubuntu-20-)
+  * [Installation on Ubuntu 20+](#installation-on-ubuntu)
 
 ## Overview
 
 This repository provides an environment that can be run using Docker. The environment is designed to run specific software or tasks, and the following instructions will guide you through installing dependencies, setting up the Docker container, and running the necessary files.
 
-## Installation on Ubuntu 20+
+## Installation on Ubuntu
 ##### Step 1: Open a terminal and clone the repo:
 ```bash
 mkdir /home/$USER/comp0244_ws
