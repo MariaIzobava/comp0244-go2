@@ -1,4 +1,4 @@
-- [Lab 1](#Lab-1-Tutorial-of-Environment-Setup-of-Unitree-GO2)
+[Lab 1](#Lab-1-Tutorial-of-Environment-Setup-of-Unitree-GO2)
 
 # Lab 1 Tutorial of Environment Setup of Unitree GO2
 - [Overview](#overview)
