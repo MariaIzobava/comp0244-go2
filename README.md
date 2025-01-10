@@ -1,6 +1,7 @@
 # Lab 1 - Tutorial of Environment Setup of Unitree GO2
-- [Overview](#Overview)
-- [Installation on Ubuntu 20+](#Installation-on-Ubuntu-20-)
+- [Lab 1 - Tutorial of Environment Setup of Unitree GO2](#lab-1---tutorial-of-environment-setup-of-unitree-go2)
+  * [Overview](#overview)
+  * [Installation on Ubuntu 20+](#installation-on-ubuntu-20-)
 
 ## Overview
 
