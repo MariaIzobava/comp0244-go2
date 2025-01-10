@@ -473,7 +473,7 @@ You can also use the Command Palette:
 # Lab 2
 ## Waypoints, Wall Localization, Wall Following
 
-### Intialise the robot and SLAM
+### Initialise the robot and SLAM
 Firstly, one can start the robot with SLAM in the following way:
 
 Open the first terminal to load the gazebo environment: 
