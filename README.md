@@ -42,3 +42,10 @@ sudo docker tag jjiao/comp0244:unitree-go-ros2-humble comp0244:unitree-go-ros2-h
 sudo apt-get install x11-xserver-utils
 xhost +
 ```
+##### Step 5: In the same terminal, create the docker container:
+```bash
+sudo docker run -it -e DISPLAY -e QT_X11_NO_MITSHM=1 -e XAUTHORITY=/tmp/.docker.xauth \
+-v /home/$USER/comp0244_ws:/usr/app/comp0244_ws \
+--network host \
+--name comp0244_unitree comp0244:unitree-go-ros2-humble /bin/bash
+```
