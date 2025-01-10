@@ -49,3 +49,9 @@ sudo docker run -it -e DISPLAY -e QT_X11_NO_MITSHM=1 -e XAUTHORITY=/tmp/.docker.
 --network host \
 --name comp0244_unitree comp0244:unitree-go-ros2-humble /bin/bash
 ```
+
+##### Step 6: Exit the docker and start your docker environment
+```bash
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+```
