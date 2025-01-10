@@ -1,7 +1,7 @@
 # Lab 1 - Tutorial of Environment Setup of Unitree GO2
 - [Overview](#overview)
 - [Installation on Ubuntu 20+](#installation-on-ubuntu)
-- [Installation on Windows 11+](#installation-on-win)
+- [Installation on Windows 11+](#installation-on-windows)
 - [Attaching to a Running Docker Container in VS Code](#Attaching-to-a-Running-Docker-Container-in-VS-Code)
 
 ## Overview
@@ -203,7 +203,7 @@ angular:
 ' -r 0.5
 ```
 
-## Installation on Windows 11+
+## Installation on Windows
 ##### Step 1: Open a terminal (wsl) and clone the repo:
 ```bash
 mkdir /home/$USER/comp0244_ws
