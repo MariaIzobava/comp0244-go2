@@ -147,6 +147,7 @@ angular:
 ' -r 0.5
 ```
 ##### Turn counter-clockwise
+```bash
 ros2 topic pub /cmd_vel geometry_msgs/Twist '
 linear:
   x: 0.0
@@ -157,8 +158,9 @@ angular:
   y: 0.0
   z: 1.0
 ' -r 0.5
-
+```
 ##### Move backwards
+```bash
 ros2 topic pub /cmd_vel geometry_msgs/Twist '
 linear:
   x: -0.3
@@ -169,8 +171,9 @@ angular:
   y: 0.0
   z: 0.0
 ' -r 1
-
+```
 ##### Move forward
+```bash
 ros2 topic pub /cmd_vel geometry_msgs/Twist '
 linear:
   x: 0.3
@@ -181,8 +184,9 @@ angular:
   y: 0.0
   z: 0.0
 ' -r 0.5
-
+```
 ##### Stop moving
+```bash
 ros2 topic pub /cmd_vel geometry_msgs/Twist '
 linear:
   x: 0.0
@@ -193,3 +197,4 @@ angular:
   y: 0.0
   z: 0.0
 ' -r 0.5
+```
