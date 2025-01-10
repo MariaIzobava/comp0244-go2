@@ -61,8 +61,8 @@ sudo docker exec -it comp0244_unitree /bin/bash
 ```bash
 source /opt/ros/humble/setup.bash
 cd /usr/app/comp0244_ws
-cd tutorial_env_go2/src/livox_ros_driver2 && ./build.sh humble
-cd /usr/app/comp0244_ws/tutorial_env_go2
+cd comp0244-go2-sol/src/livox_ros_driver2 && ./build.sh humble
+cd /usr/app/comp0244_ws/comp0244-go2-sol
 colcon build
 source install/setup.bash
 ```
@@ -81,7 +81,7 @@ ros2 topic echo /odom/ground_truth
 
 **NOTE:** if you change configuration the files such as *.xacro/, *.rviz, ... , please build the package once again:
 ```bash
-cd /usr/app/comp0244_ws/tutorial_env_go2
+cd /usr/app/comp0244_ws/comp0244-go2-sol
 colcon build
 source install/setup.bash
 ```
@@ -95,7 +95,7 @@ sudo docker exec -it comp0244_unitree /bin/bash
 
 ##### Step 10: Run the package
 ```bash
-cd /usr/app/comp0244_ws/tutorial_env_go2
+cd /usr/app/comp0244_ws/comp0244-go2-sol
 source install/setup.bash 
 ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 ```
@@ -110,14 +110,14 @@ ros2 topic echo /Odometry
 ##### Step 12: Open a second terminal and start your docker environment
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-cd /usr/app/comp0244_ws/tutorial_env_go2
+cd /usr/app/comp0244_ws/comp0244-go2-sol
 source install/setup.bash 
 ```
 
 ##### Step 13:
 Uing your keyboard to move your robot.
 ```bash
-cd /usr/app/comp0244_ws/tutorial_env_go2
+cd /usr/app/comp0244_ws/comp0244-go2-sol
 source install/setup.bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
