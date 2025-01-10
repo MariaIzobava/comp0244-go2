@@ -112,7 +112,7 @@ source install/setup.bash
 ```
 
 ##### Step 13:
-Uing your keyboard to move your robot.
+Using your keyboard to move your robot.
 ```bash
 cd /usr/app/comp0244_ws/comp0244-go2-sol
 source install/setup.bash
