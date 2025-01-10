@@ -1,11 +1,12 @@
 # COMP0244 Labs
 
-[Lab 1: Tutorial of Environment Setup of Unitree GO2](#Lab-1-Tutorial-of-Environment-Setup-of-Unitree-GO2)
+[Lab 1: Tutorial of Environment Setup of Unitree GO2](#Lab-1)
 
 [Lab 2: Waypoints, Wall Localization, Wall Following](#Lab-2)
 
 
-# Lab 1 Tutorial of Environment Setup of Unitree GO2
+# Lab 1
+## Tutorial of Environment Setup of Unitree GO2
 - [Overview](#overview)
 - [Installation on Ubuntu 20+](#installation-on-ubuntu)
 - [Installation on Windows 11+](#installation-on-windows)
@@ -468,3 +469,34 @@ You can also use the Command Palette:
 - Type and select `Docker: Attach Shell` or `Remote-Containers: Attach to Running Container`.
 
 ---
+
+# Lab 2
+## Waypoints, Wall Localization, Wall Following
+Afer you have built the environment succeffsully (step 7), now you can easily move the robot with four terminals. 
+
+Open the first terminal to load the gazebo environment: 
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
+ros2 launch go2_config gazebo_mid360.launch.py
+```
+Open the second terminal to launch SLAM
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
+ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
+```
+Open the third terminal to run the waypoint follower:
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
+ros2 run waypoint_follower waypoint_follower
+```
+Open the fourth terminal to publish your goal {x, y, theta} (w.r.t the odom frame). You can continuously update the goal to move the robot step by step:
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
+ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.0, theta: 0.0}" -r 1
+```
