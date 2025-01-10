@@ -416,9 +416,17 @@ angular:
 ' -r 0.5
 ```
 
-## Attach VScode to a Running Container (Optional)
+## Attaching to a Running Docker Container in VS Code (Optional)
 This would allow access to file explorer. 
 
+### Prerequisites
+Before you start, ensure the following are set up:
+
+1. **Docker Installed**: Docker must be installed and running on your machine.
+2. **Visual Studio Code Installed**: Make sure you have VS Code installed.
+3. **Docker Extension**:
+   - Open the Extensions view in VS Code (`Ctrl+Shift+X` or `Cmd+Shift+X` on macOS).
+   - Search for "Docker" and install the extension by Microsoft.
 
 ### 1. Open the Docker View
 - Click on the **Docker** icon in the Activity Bar on the left-hand side of VS Code. If this does not exist you can install the Docker Extension from the VScode extensions. 
