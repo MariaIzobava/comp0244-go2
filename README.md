@@ -481,14 +481,14 @@ Open the first terminal to load the gazebo environment:
 xhost +
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
+source /usr/app/comp0244_ws/comp0244-go2-sol/install/setup.bash
 ros2 launch go2_config gazebo_mid360.launch.py
 ```
 
 Open the second terminal to launch SLAM
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
+source /usr/app/comp0244_ws/comp0244-go2-sol/install/setup.bash
 ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 ```
 
