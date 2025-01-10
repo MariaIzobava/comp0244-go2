@@ -71,13 +71,10 @@ source install/setup.bash
 ```bash
 ros2 launch go2_config gazebo_mid360.launch.py rviz:=true
 ```
-You can see the robot similar to the below figure and can obtain ground truth poses:
-<!-- (base_link with respect to the world) -->
+You can obtain ground truth poses (base_link with respect to the world):
 ```bash
 ros2 topic echo /odom/ground_truth
 ```
-
-<img src="media/viz_rviz.png" alt="viz_rviz" width="50%">
 
 **NOTE:** if you change configuration the files such as *.xacro/, *.rviz, ... , please build the package once again:
 ```bash
