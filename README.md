@@ -21,7 +21,7 @@ This repository provides an environment that can be run using Docker. The enviro
 ```bash
 mkdir /home/$USER/comp0244_ws
 cd /home/$USER/comp0244_ws
-git clone --recursive git@github.com:COMP0244-S25/comp0244-go2-sol.git
+git clone --recursive git@github.com:COMP0244-S25/comp0244-go2.git
 ```
 
 #### Environment: ROS2-Humble
@@ -76,8 +76,8 @@ sudo docker exec -it comp0244_unitree /bin/bash
 ```bash
 source /opt/ros/humble/setup.bash
 cd /usr/app/comp0244_ws
-cd comp0244-go2-sol/src/livox_ros_driver2 && ./build.sh humble
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd comp0244-go2/src/livox_ros_driver2 && ./build.sh humble
+cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
 ```
@@ -93,7 +93,7 @@ ros2 topic echo /odom/ground_truth
 
 **NOTE:** if you change configuration the files such as *.xacro/, *.rviz, ... , please build the package once again:
 ```bash
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
 ```
@@ -107,7 +107,7 @@ sudo docker exec -it comp0244_unitree /bin/bash
 
 ##### Step 10: Run the package
 ```bash
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash 
 ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 ```
@@ -122,14 +122,14 @@ ros2 topic echo /Odometry
 ##### Step 12: Open a second terminal and start your docker environment
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash 
 ```
 
 ##### Step 13:
 Using your keyboard to move your robot.
 ```bash
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
@@ -216,7 +216,7 @@ angular:
 ```bash
 mkdir /home/$USER/comp0244_ws
 cd /home/$USER/comp0244_ws
-git clone --recursive git@github.com:COMP0244-S25/comp0244-go2-sol.git
+git clone --recursive git@github.com:COMP0244-S25/comp0244-go2.git
 ```
 
 #### Environment: ROS2-Humble
@@ -293,8 +293,8 @@ sudo docker exec -it comp0244_unitree /bin/bash
 ```bash
 source /opt/ros/humble/setup.bash
 cd /usr/app/comp0244_ws
-cd comp0244-go2-sol/src/livox_ros_driver2 && ./build.sh humble
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd comp0244-go2/src/livox_ros_driver2 && ./build.sh humble
+cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
 ```
@@ -310,7 +310,7 @@ ros2 topic echo /odom/ground_truth
 
 **NOTE:** if you change configuration the files such as *.xacro/, *.rviz, ... , please build the package once again:
 ```bash
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
 ```
@@ -324,7 +324,7 @@ sudo docker exec -it comp0244_unitree /bin/bash
 
 ##### Step 10: Run the package
 ```bash
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash 
 ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 ```
@@ -339,14 +339,14 @@ ros2 topic echo /Odometry
 ##### Step 12: Open a second terminal and start your docker environment
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash 
 ```
 
 ##### Step 13:
 Using your keyboard to move your robot.
 ```bash
-cd /usr/app/comp0244_ws/comp0244-go2-sol
+cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
@@ -481,14 +481,14 @@ Open the first terminal to load the gazebo environment:
 xhost +
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2-sol/install/setup.bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 launch go2_config gazebo_mid360.launch.py
 ```
 
 Open the second terminal to launch SLAM
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2-sol/install/setup.bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 ```
 
@@ -496,13 +496,13 @@ ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 Open the third terminal to run the waypoint follower:
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2-sol/install/setup.bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 run waypoint_follower waypoint_follower
 ```
 
 Open the fourth terminal to publish your goal {x, y, theta} (w.r.t the odom frame). You can continuously update the goal to move the robot step by step:
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2-sol/install/setup.bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.0, theta: 0.0}" -r 1
 ```
