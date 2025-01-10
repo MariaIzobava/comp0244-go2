@@ -1,12 +1,12 @@
-[submodule "unitree-go2-ros2"]
-	path = src/unitree-go2-ros2
-	url = git@github.com:COMP0244-S25/unitree-go2-ros2.git
-[submodule "src/livox_laser_simulation_ros2"]
-	path = src/livox_laser_simulation_ros2
-	url = git@github.com:COMP0244-S25/livox_laser_simulation_RO2
 [submodule "src/livox_ros_driver2"]
 	path = src/livox_ros_driver2
 	url = git@github.com:COMP0244-S25/livox_ros_driver2
-[submodule "src/fast_lio"]
-	path = src/fast_lio
+[submodule "src/unitree-go2-ros2"]
+	path = src/unitree-go2-ros2
+	url = git@github.com:COMP0244-S25/unitree-go2-ros2.git
+[submodule "src/livox_laser_simulation_RO2"]
+	path = src/livox_laser_simulation_RO2
+	url = git@github.com:COMP0244-S25/livox_laser_simulation_RO2
+[submodule "src/FAST_LIO"]
+	path = src/FAST_LIO
 	url = git@github.com:COMP0244-S25/FAST_LIO.git
