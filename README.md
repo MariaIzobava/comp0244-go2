@@ -1,9 +1,10 @@
 # Lab 1 - Tutorial of Environment Setup of Unitree GO2
+[Overview](#Overview)
 
-##### Table of Contents  
-[Overview](#Overview)  
 [Installation on Ubuntu 20+](#InstallUbuntu)
+
 [Installation on Windows 11+](#InstallWin)
+
 [Docker Container in VS Code](#VSCode)
 
 <a name="Overview"/>
