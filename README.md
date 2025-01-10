@@ -1,13 +1,6 @@
 # Lab 1 - Tutorial of Environment Setup of Unitree GO2
-[Overview](#Overview)
+- [Overview](#Overview)
 
-[Installation on Ubuntu 20+](#Installation-on-Ubuntu-20+)
-
-[Installation on Windows 11+](#InstallWin)
-
-[Docker Container in VS Code](#VSCode)
-
-<a name="Overview"/>
 ## Overview
 
 This repository provides an environment that can be run using Docker. The environment is designed to run specific software or tasks, and the following instructions will guide you through installing dependencies, setting up the Docker container, and running the necessary files.
