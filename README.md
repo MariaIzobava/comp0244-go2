@@ -5,7 +5,7 @@
 This repository provides an environment that can be run using Docker. The environment is designed to run specific software or tasks, and the following instructions will guide you through installing dependencies, setting up the Docker container, and running the necessary files.
 
 ## Installation on Ubuntu 20+
-### Step 1: Open a terminal and clone the repo:
+##### Step 1: Open a terminal and clone the repo:
 ```bash
 mkdir /home/$USER/comp0244_ws
 cd /home/$USER/comp0244_ws
