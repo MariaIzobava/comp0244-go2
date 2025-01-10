@@ -129,6 +129,3 @@ u                           i (move forward)    o
 j (counterclockwise turn)   k (stop)            l (clockwise turn)
 m                           , (move backward)   .
 ```
-
-You can see the robot similar to:
-<img src="media/viz_fastlio_slam.png" alt="viz_rviz" width="50%">
