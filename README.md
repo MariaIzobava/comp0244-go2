@@ -472,7 +472,9 @@ You can also use the Command Palette:
 
 # Lab 2
 ## Waypoints, Wall Localization, Wall Following
-Afer you have built the environment succeffsully (step 7), now you can easily move the robot with four terminals. 
+
+### Intialise the robot and SLAM
+Firstly, one can start the robot with SLAM in the following way:
 
 Open the first terminal to load the gazebo environment: 
 ```bash
@@ -482,18 +484,22 @@ sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
 ros2 launch go2_config gazebo_mid360.launch.py
 ```
+
 Open the second terminal to launch SLAM
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
 ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 ```
+
+### Waypoints
 Open the third terminal to run the waypoint follower:
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
 ros2 run waypoint_follower waypoint_follower
 ```
+
 Open the fourth terminal to publish your goal {x, y, theta} (w.r.t the odom frame). You can continuously update the goal to move the robot step by step:
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
