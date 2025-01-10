@@ -129,3 +129,67 @@ u                           i (move forward)    o
 j (counterclockwise turn)   k (stop)            l (clockwise turn)
 m                           , (move backward)   .
 ```
+
+#### Step 15:
+Instead of Steps 13 and 14, we can move the robot (e.g., stop, move forward, move backward, clock-wise turn, couterwise turn) via commanding the velocity:
+
+##### Turn clockwise
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: -1.0
+' -r 0.5
+```
+##### Turn counter-clockwise
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 1.0
+' -r 0.5
+
+##### Move backwards
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: -0.3
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+' -r 1
+
+##### Move forward
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: 0.3
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+' -r 0.5
+
+##### Stop moving
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+' -r 0.5
