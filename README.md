@@ -1,7 +1,7 @@
 # Lab 1 - Tutorial of Environment Setup of Unitree GO2
 [Overview](#Overview)
 
-[Installation on Ubuntu 20+](#InstallUbuntu)
+[Installation on Ubuntu 20+](#Installation on Ubuntu 20+)
 
 [Installation on Windows 11+](#InstallWin)
 
