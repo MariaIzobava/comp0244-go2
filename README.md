@@ -55,3 +55,80 @@ sudo docker run -it -e DISPLAY -e QT_X11_NO_MITSHM=1 -e XAUTHORITY=/tmp/.docker.
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 ```
+
+### Run the Unitree-GO2 Simulation (in the docker)
+##### Step 7: Build the package:
+```bash
+source /opt/ros/humble/setup.bash
+cd /usr/app/comp0244_ws
+cd tutorial_env_go2/src/livox_ros_driver2 && ./build.sh humble
+cd /usr/app/comp0244_ws/tutorial_env_go2
+colcon build
+source install/setup.bash
+```
+
+##### Step 8: Run the package with running the [FAST-LIO SLAM](https://github.com/hku-mars/FAST_LIO):
+```bash
+ros2 launch go2_config gazebo_mid360.launch.py rviz:=true
+```
+You can see the robot similar to the below figure and can obtain ground truth poses:
+<!-- (base_link with respect to the world) -->
+```bash
+ros2 topic echo /odom/ground_truth
+```
+
+<img src="media/viz_rviz.png" alt="viz_rviz" width="50%">
+
+**NOTE:** if you change configuration the files such as *.xacro/, *.rviz, ... , please build the package once again:
+```bash
+cd /usr/app/comp0244_ws/tutorial_env_go2
+colcon build
+source install/setup.bash
+```
+<!-- More examples are shown in this [repo](https://github.com/COMP0244-S25/unitree-go2-ros2) -->
+
+### Run the [FAST-LIO SLAM](https://github.com/hku-mars/FAST_LIO) (in the docker)
+##### Step 9: Open a second terminal and start your docker environment
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+```
+
+##### Step 10: Run the package
+```bash
+cd /usr/app/comp0244_ws/tutorial_env_go2
+source install/setup.bash 
+ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
+```
+
+##### Step 11: Check FAST-LIO's poses 
+<!-- (body with respect to camera_init) -->
+```bash
+ros2 topic echo /Odometry
+```
+
+### Move the Robot:
+##### Step 12: Open a second terminal and start your docker environment
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+cd /usr/app/comp0244_ws/tutorial_env_go2
+source install/setup.bash 
+```
+
+##### Step 13:
+Uing your keyboard to move your robot.
+```bash
+cd /usr/app/comp0244_ws/tutorial_env_go2
+source install/setup.bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
+
+##### Step 14
+Use your keyboard to move the robot:
+```
+u                           i (move forward)    o 
+j (counterclockwise turn)   k (stop)            l (clockwise turn)
+m                           , (move backward)   .
+```
+
+You can see the robot similar to:
+<img src="media/viz_fastlio_slam.png" alt="viz_rviz" width="50%">
