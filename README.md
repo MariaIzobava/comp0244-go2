@@ -252,7 +252,7 @@ export WAYLAND_DISPLAY=wayland-0
 export XDG_RUNTIME_DIR=/run/user/1000
 export PULSE_SERVER=/run/user/1000/pulse/native' >> ~/.bashrc
 
-source ~/.bashr
+source ~/.bashrc
 ```
 
 Verify display setup:
