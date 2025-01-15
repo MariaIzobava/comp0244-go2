@@ -436,21 +436,21 @@ This repository provides an environment that can be run within an virtual enviro
 
 ---
 
-Step 1. Install UTM Virtual Machine
+##### Step 1. Install UTM Virtual Machine
 1. Visit the [UTM Virtual Machine Website](https://mac.getutm.app/).
 2. Download the **free version** of the UTM application (not the App Store version to avoid charges).
 3. Open the downloaded `UTM.dmg` file and follow the installation steps.
 
 ---
 
-Step 2. Download the Virtual Machine Image
+##### Step 2. Download the Virtual Machine Image
 1. Access the Google Drive folder provided by the course.
 2. Download the `.zip` file containing the virtual machine image.
 3. Unzip the file to extract the `Linux.utm` virtual machine image.
 
 ---
 
-Step 3. Set Up the Virtual Machine
+##### Step 3. Set Up the Virtual Machine
 1. Open the **UTM** application.
 2. Click the **+** icon in the application interface.
 3. Select **Open** and navigate to the extracted `Linux.utm` file.
@@ -458,26 +458,26 @@ Step 3. Set Up the Virtual Machine
 
 ---
 
-Step 4. Access the Virtual Machine
+##### Step 4. Access the Virtual Machine
 - **Username**: `maria`
 - **Password** (including sudo/root): `mars`
 - Once logged in, the virtual machine will boot to Ubuntu's desktop.
 
 ---
 
-Step 5. Disk Space Warning
+##### Step 5. Disk Space Warning
 If a **"Not Enough Disk Space"** warning appears, you can safely ignore it for now.
 
 ---
 
-Step 6. Shared Folder Setup
+##### Step 6. Shared Folder Setup
 To share files between your Mac and the virtual machine:
 1. Use the **Browse** icon in the UTM interface to mount a shared directory.
 2. For additional details, refer to [UTM documentation](https://mac.getutm.app/).
 
 ---
 
-Step 7. Test the Virtual Machine
+##### Step 7. Test the Virtual Machine
 1. Open a terminal (Terminator) in the virtual machine, or press `Ctrl+Alt+T`.
 2. Run the following command to start Gazebo:
    ```bash
@@ -492,88 +492,138 @@ Step 7. Test the Virtual Machine
    ```bash
    source install/setup.bash
    ```
-
-Step 8: Run the package with running the [FAST-LIO SLAM](https://github.com/hku-mars/FAST_LIO):
+   
+##### Step 8: Run the package with running the [FAST-LIO SLAM](https://github.com/hku-mars/FAST_LIO):
 ```bash
 ros2 launch go2_config gazebo_mid360.launch.py rviz:=true
 ```
-You can see the robot similar to the below figure and can obtain ground truth poses:
-<!-- (base_link with respect to the world) -->
+You can obtain ground truth poses (base_link with respect to the world) in a new terminal:
 ```bash
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash
 ros2 topic echo /odom/ground_truth
 ```
 
-<img src="media/viz_rviz.png" alt="viz_rviz" width="50%">
-
 **NOTE:** if you change configuration the files such as *.xacro/, *.rviz, ... , please build the package once again:
 ```bash
-cd /usr/app/comp0244_ws/tutorial_env_go2
+cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
 ```
 <!-- More examples are shown in this [repo](https://github.com/COMP0244-S25/unitree-go2-ros2) -->
 
 ### Run the [FAST-LIO SLAM](https://github.com/hku-mars/FAST_LIO) (in the docker)
-Step 9: Open a second terminal and source it
+##### Step 9: Open another terminal and source your environment
 ```bash
-cd /usr/app/comp0244_ws/tutorial_env_go2
+cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash 
 ```
 
-Step 10: Run the package
+##### Step 10: Run the package
 ```bash
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash 
 ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 ```
 
-Step 11: Check FAST-LIO's poses 
+##### Step 11: Check FAST-LIO's poses 
 <!-- (body with respect to camera_init) -->
 ```bash
 ros2 topic echo /Odometry
 ```
 
 ### Move the Robot:
-Step 12: Open another terminal and source it
+##### Step 12: Open another terminal and source your environment
 ```bash
-cd /usr/app/comp0244_ws/tutorial_env_go2
+cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash 
 ```
 
-#### Step 13 - Option 1:
-Uing your keyboard to move your robot.
+##### Step 13:
+Using your keyboard to move your robot.
 ```bash
-cd /usr/app/comp0244_ws/tutorial_env_go2
+cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 
-Step 14 - Option 2: Enter your keyboard to move the robot
+##### Step 14
+Use your keyboard to move the robot:
 ```
 u                           i (move forward)    o 
 j (counterclockwise turn)   k (stop)            l (clockwise turn)
 m                           , (move backward)   .
 ```
-You can see the robot similar to
 
-<img src="media/viz_fastlio_slam.png" alt="viz_rviz" width="50%">
+#### Step 15:
+Instead of Steps 13 and 14, we can move the robot (e.g., stop, move forward, move backward, clock-wise turn, couterwise turn) via commanding the velocity:
 
-#### Step 13 - Option 2:
-We provide a set of scripts to move the robot (e.g., stop, move forward, move backward, clock-wise turn, couterwise turn).
+##### Turn clockwise
 ```bash
-bash script_movement/move_forward.sh
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: -1.0
+' -r 0.5
+```
+##### Turn counter-clockwise
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 1.0
+' -r 0.5
+```
+##### Move backwards
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: -0.3
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+' -r 1
+```
+##### Move forward
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: 0.3
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+' -r 0.5
+```
+##### Stop moving
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/Twist '
+linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+' -r 0.5
 ```
 
-#### Step 13 - Option 3:
-We provide waypoint follower to move the robot to the goal (w.r.t. the odom frame):
-
-open a terminal to run the waypoint follower:
-```bash
-source /usr/app/comp0244_ws/tutorial_env_go2/install/setup.bash
-ros2 run waypoint_follower waypoint_follower
-```
-open another teminal to publish the goal {x, y, theta} (the trajectory will be illustrated in the rviz): 
-```bash
-ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.0, theta: 0.3}" -r 1
-```
 
 
 
