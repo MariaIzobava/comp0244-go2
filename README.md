@@ -25,6 +25,7 @@ cd /home/$USER/comp0244_ws
 git clone --recursive git@github.com:COMP0244-S25/comp0244-go2.git
 ```
 
+
 #### Environment: ROS2-Humble
 ##### Step 2: In the same terminal, download the Docker (https://docs.docker.com/engine/install):
 ```bash
@@ -455,6 +456,7 @@ This repository provides an environment that can be run within an virtual enviro
 6. Follow the installer prompts:
    - Use the entire disk for installation.
    - Set a username, password, and hostname.
+   - Enable install of **OpenSSH**
 7. Stop the VM.
 8. Go to **Drives** → Remove the **CD/DVD Drive**.
 9. Save and reboot.
@@ -476,9 +478,27 @@ This repository provides an environment that can be run within an virtual enviro
     sudo reboot
     ```
 ---
-
-
-##### Step 4. Install ROS2 humble on your VM
+##### Step 4. Set up your SSH key. 
+1.Set SSH key compatible with yout Github account - replace "youremail"
+  ```bash
+   ssh-keygen -t rsa -b 4096 -C “youremail”@youremail.com
+  eval "$(ssh-agent -s)"
+  ssh-add ~/.ssh/id_rsa
+  cat ~/.ssh/id_rsa.pub
+  ```
+2. Copy to GitHub ssh keys:
+   - In your Github acount go to settings and SSH and GPG Keys.
+   - Add a new SSH key and name it "UbunutuVMkey"
+   - Coppy the output of the last command.
+   - sSave entry 
+   
+3. Varify correct setup:
+   ```bash
+   ssh -T git@github.com
+    ```
+  You should see a "Hey, [your Github username]"
+  
+##### Step 5. Install ROS2 humble on your VM
 1: Setup Locale
 Make sure your system locale is set to UTF-8:
 
@@ -549,12 +569,13 @@ sudo apt install -y python3-argcomplete
 
 ---
 
-
-##### Step 6. Shared Folder Setup
-To share files between your Mac and the virtual machine:
-1. Use the **Browse** icon in the UTM interface to mount a shared directory.
-2. For additional details, refer to [UTM documentation](https://mac.getutm.app/).
-
+##### Step 6. Install Module Repository: 
+Open a terminal and run: 
+```bash
+mkdir /home/$USER/comp0244_ws
+cd /home/$USER/comp0244_ws
+git clone --recursive git@github.com:COMP0244-S25/comp0244-go2.git
+```
 ---
 
 ##### Step 7. Test the Virtual Machine
