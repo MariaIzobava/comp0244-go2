@@ -440,35 +440,115 @@ This repository provides an environment that can be run within an virtual enviro
 1. Visit the [UTM Virtual Machine Website](https://mac.getutm.app/).
 2. Download the **free version** of the UTM application (not the App Store version to avoid charges).
 3. Open the downloaded `UTM.dmg` file and follow the installation steps.
+4. Download the 64-bit [ARM Ubuntu 22.04 image](https://cdimage.ubuntu.com/releases/jammy/release/)
+
+##### Step 2. Set up the Ubunutu 22.04 VM: 
+1. Open UTM and click **+** → **Virtualize** → **Linux**.
+2. Allocate:
+   - **Memory**: 2+ GB.
+   - **CPU Cores**: 2+.
+3. Add:
+   - **Primary Disk**: 30+ GB.
+   - **CD/DVD Drive**: Attach the downloaded Ubuntu ISO.
+4. Set the **CD/DVD Drive** as the first boot device under **System**.
+5. Save and click **Play** to boot the VM into the Ubuntu installer.
+6. Follow the installer prompts:
+   - Use the entire disk for installation.
+   - Set a username, password, and hostname.
+7. Stop the VM.
+8. Go to **Drives** → Remove the **CD/DVD Drive**.
+9. Save and reboot.
+
+---
+##### Step 3. Install Graphics on your VM
+
+1. Update your VM:
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+   ```
+2. Install the graphic interface:
+    ```bash
+    sudo apt install -y xubuntu-desktop
+    ```
+3. When prompted - selected **lightdm**
+4. Reboot your environemnt:
+    ```bash
+    sudo reboot
+    ```
+---
+
+
+##### Step 4. Install ROS2 humble on your VM
+1: Setup Locale
+Make sure your system locale is set to UTF-8:
+
+```bash
+sudo apt update && sudo apt install -y locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+```
 
 ---
 
-##### Step 2. Download the Virtual Machine Image
-1. Access the Google Drive folder provided by the course.
-2. Download the `.zip` file containing the virtual machine image.
-3. Unzip the file to extract the `Linux.utm` virtual machine image.
+2: Add the ROS 2 Repository
+
+```bash
+sudo apt update && sudo apt install -y software-properties-common
+sudo add-apt-repository universe
+sudo apt update && sudo apt install -y curl
+curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | sudo apt-key add -
+```
+
+Add the ROS 2 repository to your sources list:
+
+```bash
+sudo sh -c 'echo "deb [arch=arm64] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
+```
 
 ---
 
-##### Step 3. Set Up the Virtual Machine
-1. Open the **UTM** application.
-2. Click the **+** icon in the application interface.
-3. Select **Open** and navigate to the extracted `Linux.utm` file.
-4. Click the **Play** button to launch the virtual machine.
+3: Install ROS 2 Humble
+Update your package index and install ROS 2:
+
+```bash
+sudo apt update
+sudo apt install -y ros-humble-desktop
+```
+
+For a smaller installation (if you're limited on storage or just need core features):
+
+```bash
+sudo apt install -y ros-humble-ros-base
+```
 
 ---
 
-##### Step 4. Access the Virtual Machine
-- **Username**: `maria`
-- **Password** (including sudo/root): `mars`
-- Once logged in, the virtual machine will boot to Ubuntu's desktop.
+4: Environment Setup
+Source the ROS 2 setup file automatically on terminal startup:
+
+```bash
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
 
 ---
 
-##### Step 5. Disk Space Warning
-If a **"Not Enough Disk Space"** warning appears, you can safely ignore it for now.
+5: Install Additional Tools (Optional)
+Install `colcon` for building ROS 2 packages:
+
+```bash
+sudo apt install -y python3-colcon-common-extensions
+```
+
+Install ROS 2 CLI tools:
+
+```bash
+sudo apt install -y python3-argcomplete
+```
 
 ---
+
 
 ##### Step 6. Shared Folder Setup
 To share files between your Mac and the virtual machine:
