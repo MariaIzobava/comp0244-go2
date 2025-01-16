@@ -22,7 +22,7 @@ This repository provides an environment that can be run using Docker. The enviro
 ```bash
 mkdir /home/$USER/comp0244_ws
 cd /home/$USER/comp0244_ws
-git clone --recursive https://github.com/COMP0244-S25/comp0244-go2.git
+git clone --recursive git@github.com:COMP0244-S25/comp0244-go2.git
 ```
 
 
@@ -218,7 +218,7 @@ angular:
 ```bash
 mkdir /home/$USER/comp0244_ws
 cd /home/$USER/comp0244_ws
-git clone --recursive https://github.com/COMP0244-S25/comp0244-go2.git
+git clone --recursive git@github.com:COMP0244-S25/comp0244-go2.git
 ```
 
 #### Environment: ROS2-Humble
