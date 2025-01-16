@@ -1,7 +1,8 @@
 ##################################################
 ###### Dockerfile for Unitree Robot-GO2 ROS2
 ##################################################
-FROM osrf/ros:humble-desktop-full
+# FROM jjiao/comp0244:unitree-go-ros2-humble
+FROM jjiao/comp0244:unitree-go-ros2-humble
 LABEL maintainer="gogojjh <jiaojh1994@gmail.com>"
 
 ############### Path Parameters
