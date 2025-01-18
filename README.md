@@ -17,6 +17,17 @@
 
 This repository provides an environment that can be run using Docker. The environment is designed to run specific software or tasks, and the following instructions will guide you through installing dependencies, setting up the Docker container, and running the necessary files.
 
+## Setup your SSH Key in your Github
+##### Step 0: Generate a new SSH key. Open a terminal and run:
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+Then, add the SSH key to your GitHub account (New SSH key):
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+
 ## Installation on Ubuntu
 ##### Step 1: Open a terminal and clone the repo:
 ```bash
