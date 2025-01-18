@@ -23,6 +23,11 @@ This repository provides an environment that can be run using Docker. The enviro
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
 
+For Mac you need also to do:
+```bash
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519                    
+```
+
 Then, add the SSH key to your GitHub account (New SSH key):
 ```bash
 cat ~/.ssh/id_rsa.pub
