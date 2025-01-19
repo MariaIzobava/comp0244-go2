@@ -21,6 +21,19 @@ sudo rm -rf build log install
 colcon build
 ```
 
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+```
+
+```bash
+cd /home/$USER/comp0244_ws/comp0244-go2/
+git pull --recurse-submodules
+sudo rm -rf build log install
+colcon build
+```
+
 ## Waypoint Follower
 ### Terminal 1: Launch Gazebo and RViz
 ```bash
