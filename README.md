@@ -788,11 +788,20 @@ You can also use the Command Palette:
 
 # Lab 2
 ## Waypoints, Wall Localization, Wall Following
+**Date:** 23/01/2025
+**Goal:** Move the Robot via Waypoints, Wall Localization, and Wall Following: _we will first understand how to move the robot to a waypoint (x,y,θ). We will check how to use the lidar data to fit lines to the point cloud of a wall and using these lines to follow the wall/obstacle._
 
-### Initialise the robot and SLAM
-Firstly, one can start the robot with SLAM in the following way:
+### Pull recursively all repos and enter the docker to re-compile
+Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
+```bash
+cd /home/$USER/comp0244_ws
+git pull --recurse-submodules
+rm -rf build log install
+colcon build
+```
 
-Open the first terminal to load the gazebo environment: 
+## Waypoint Follower
+### Terminal 1: Launch Gazebo and RViz
 ```bash
 xhost +
 sudo docker container start comp0244_unitree
@@ -800,20 +809,27 @@ sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 launch go2_config gazebo_mid360.launch.py
 ```
-
-Open the second terminal to launch SLAM
+### Terminal 2: Launch FAST-LIO SLAM
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 ```
 
+### Terminal 3: Launch Waypoint Follower
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 run waypoint_follower waypoint_follower
+```
+
+### Terminal 4: Launch Local Map Creator
+
 ### Waypoints
 Open the third terminal to run the waypoint follower:
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 run waypoint_follower waypoint_follower
 ```
 
 Open the fourth terminal to publish your goal {x, y, theta} (w.r.t the odom frame). You can continuously update the goal to move the robot step by step:
@@ -822,6 +838,14 @@ sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.0, theta: 0.0}" -r 1
 ```
+
+### Terminal 5: Launch Bug0 Planner
+
+
+## Wall Detection
+
+
+
 
 # BSD 3-Clause License
 
