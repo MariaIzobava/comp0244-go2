@@ -789,6 +789,7 @@ You can also use the Command Palette:
 # Lab 2
 ## Waypoints, Wall Localization, Wall Following
 **Date:** 23/01/2025
+
 **Goal:** Move the Robot via Waypoints, Wall Localization, and Wall Following: _we will first understand how to move the robot to a waypoint (x,y,θ). We will check how to use the lidar data to fit lines to the point cloud of a wall and using these lines to follow the wall/obstacle._
 
 ### Pull recursively all repos and enter the docker to re-compile
