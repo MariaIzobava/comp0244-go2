@@ -1,9 +1,71 @@
 # COMP0244 Labs
 
-[Lab 1: Tutorial of Environment Setup of Unitree GO2](#Lab-1)
-
 [Lab 2: Waypoints, Wall Localization, Wall Following](#Lab-2)
 
+[Lab 1: Tutorial of Environment Setup of Unitree GO2](#Lab-1)
+
+---
+
+# Lab 2
+## Waypoints, Wall Localization, Wall Following
+**Date:** 23/01/2025
+
+**Goal:** Move the Robot via Waypoints, Wall Localization, and Wall Following: _we will first understand how to move the robot to a waypoint (x,y,θ). We will check how to use the lidar data to fit lines to the point cloud of a wall and using these lines to follow the wall/obstacle._
+
+### Pull recursively all repos and enter the docker to re-compile
+Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
+```bash
+cd /home/$USER/comp0244_ws
+git pull --recurse-submodules
+rm -rf build log install
+colcon build
+```
+
+## Waypoint Follower
+### Terminal 1: Launch Gazebo and RViz
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 launch go2_config gazebo_mid360.launch.py
+```
+### Terminal 2: Launch FAST-LIO SLAM
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
+```
+
+### Terminal 3: Launch Waypoint Follower
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 run waypoint_follower waypoint_follower
+```
+
+### Terminal 4: Launch Local Map Creator
+
+### Waypoints
+Open the third terminal to run the waypoint follower:
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+```
+
+Open the fourth terminal to publish your goal {x, y, theta} (w.r.t the odom frame). You can continuously update the goal to move the robot step by step:
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.0, theta: 0.0}" -r 1
+```
+
+### Terminal 5: Launch Bug0 Planner
+
+
+## Wall Detection
+
+---
 
 # Lab 1
 ## Tutorial of Environment Setup of Unitree GO2
@@ -783,69 +845,6 @@ If the container is stopped, you can restart it:
 You can also use the Command Palette:
 - Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on macOS).
 - Type and select `Docker: Attach Shell` or `Remote-Containers: Attach to Running Container`.
-
----
-
-# Lab 2
-## Waypoints, Wall Localization, Wall Following
-**Date:** 23/01/2025
-
-**Goal:** Move the Robot via Waypoints, Wall Localization, and Wall Following: _we will first understand how to move the robot to a waypoint (x,y,θ). We will check how to use the lidar data to fit lines to the point cloud of a wall and using these lines to follow the wall/obstacle._
-
-### Pull recursively all repos and enter the docker to re-compile
-Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
-```bash
-cd /home/$USER/comp0244_ws
-git pull --recurse-submodules
-rm -rf build log install
-colcon build
-```
-
-## Waypoint Follower
-### Terminal 1: Launch Gazebo and RViz
-```bash
-xhost +
-sudo docker container start comp0244_unitree
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 launch go2_config gazebo_mid360.launch.py
-```
-### Terminal 2: Launch FAST-LIO SLAM
-```bash
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
-```
-
-### Terminal 3: Launch Waypoint Follower
-```bash
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 run waypoint_follower waypoint_follower
-```
-
-### Terminal 4: Launch Local Map Creator
-
-### Waypoints
-Open the third terminal to run the waypoint follower:
-```bash
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-```
-
-Open the fourth terminal to publish your goal {x, y, theta} (w.r.t the odom frame). You can continuously update the goal to move the robot step by step:
-```bash
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.0, theta: 0.0}" -r 1
-```
-
-### Terminal 5: Launch Bug0 Planner
-
-
-## Wall Detection
-
-
 
 
 # BSD 3-Clause License
