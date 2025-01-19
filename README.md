@@ -27,10 +27,12 @@ sudo docker exec -it comp0244_unitree /bin/bash
 ```
 
 ```bash
-cd /home/$USER/comp0244_ws/comp0244-go2/
-git pull --recurse-submodules
-sudo rm -rf build log install
+source /opt/ros/humble/setup.bash
+cd /usr/app/comp0244_ws
+cd comp0244-go2/src/livox_ros_driver2 && ./build.sh humble
+cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
+source install/setup.bash
 ```
 
 ## Waypoint Follower
