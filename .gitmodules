@@ -13,3 +13,6 @@
 [submodule "src/waypoint_follower"]
 	path = src/waypoint_follower
 	url = git@github.com:COMP0244-S25/waypoint_follower.git
+[submodule "src/local_map_creator"]
+	path = src/local_map_creator
+	url = git@github.com:COMP0244-S25/local_map_creator.git
