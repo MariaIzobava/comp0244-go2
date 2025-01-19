@@ -97,7 +97,16 @@ ros2 run waypoint_follower waypoint_follower
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 run local_map_creator local_map_creator
+ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 0.0, y: 1.2, theta: 0.0}" -r 1
+```
+
+Exit
+
+### Terminal 5: Launch Waypoint Follower
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 run waypoint_follower waypoint_follower
 ```
 
 ### Task
