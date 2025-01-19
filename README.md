@@ -65,21 +65,43 @@ source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.78, theta: 0.0}" -r 1
 ```
 
-### Terminal 4: Launch Local Map Creator
+### Task
+1. Move the robot to (x,y) = (0.0,1.2)
+2. Publish waypoints that move the robot around the obstacle.
+3. Make the theta angle work
 
-
-
-Open the fourth terminal to publish your goal {x, y, theta} (w.r.t the odom frame). You can continuously update the goal to move the robot step by step:
+## Line Detection
+### Terminal 1: Launch Gazebo and RViz
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 launch go2_config gazebo_mid360.launch.py
+```
+### Terminal 2: Launch FAST-LIO SLAM
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.0, theta: 0.0}" -r 1
+ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
 ```
 
-### Terminal 5: Launch Bug0 Planner
+### Terminal 3: Launch Waypoint Follower
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 run waypoint_follower waypoint_follower
+```
 
+### Terminal 4: Launch Local Map Creator
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 run local_map_creator local_map_creator
+```
 
-## Wall Detection
+### Task
+
 
 ---
 
