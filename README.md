@@ -18,7 +18,6 @@ Open the first terminal to pull recursively all repos, re-compile, and load the 
 cd /home/$USER/comp0244_ws/comp0244-go2/
 git pull --recurse-submodules
 sudo rm -rf build log install
-colcon build
 ```
 
 ```bash
