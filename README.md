@@ -44,14 +44,16 @@ source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 run waypoint_follower waypoint_follower
 ```
 
-### Terminal 4: Launch Local Map Creator
-
-### Waypoints
-Open the third terminal to run the waypoint follower:
+### Terminal 4: Publish a waypoint {x, y, theta} (w.r.t the odom frame)
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.78, theta: 0.0}" -r 1
 ```
+
+### Terminal 4: Launch Local Map Creator
+
+
 
 Open the fourth terminal to publish your goal {x, y, theta} (w.r.t the odom frame). You can continuously update the goal to move the robot step by step:
 ```bash
