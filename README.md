@@ -1,9 +1,118 @@
 # COMP0244 Labs
 
-[Lab 1: Tutorial of Environment Setup of Unitree GO2](#Lab-1)
-
 [Lab 2: Waypoints, Wall Localization, Wall Following](#Lab-2)
 
+[Lab 1: Tutorial of Environment Setup of Unitree GO2](#Lab-1)
+
+---
+
+# Lab 2
+## Waypoints, Wall Localization, Wall Following
+**Date:** 23/01/2025
+
+**Goal:** Move the Robot via Waypoints, Wall Localization, and Wall Following: _we will first understand how to move the robot to a waypoint (x,y,θ). We will check how to use the lidar data to fit lines to the point cloud of a wall and using these lines to follow the wall/obstacle._
+
+### Pull recursively all repos and enter the docker to re-compile
+Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
+```bash
+cd /home/$USER/comp0244_ws/comp0244-go2/
+git pull --recurse-submodules
+sudo rm -rf build log install
+```
+
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+```
+
+```bash
+source /opt/ros/humble/setup.bash
+cd /usr/app/comp0244_ws
+cd comp0244-go2/src/livox_ros_driver2 && ./build.sh humble
+cd /usr/app/comp0244_ws/comp0244-go2
+colcon build
+source install/setup.bash
+```
+
+## Waypoint Follower
+### Terminal 1: Launch Gazebo and RViz
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 launch go2_config gazebo_mid360.launch.py
+```
+### Terminal 2: Launch FAST-LIO SLAM
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
+```
+
+### Terminal 3: Launch Waypoint Follower
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 run waypoint_follower waypoint_follower
+```
+
+### Terminal 4: Publish a waypoint {x, y, theta} (w.r.t the odom frame)
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.78, theta: 0.0}" -r 1
+```
+
+### Task
+1. Move the robot to (x,y) = (0.0,1.2)
+2. Publish waypoints that move the robot around the obstacle.
+3. Make the theta angle work
+
+## Line Detection
+### Terminal 1: Launch Gazebo and RViz
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 launch go2_config gazebo_mid360.launch.py
+```
+### Terminal 2: Launch FAST-LIO SLAM
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
+```
+
+### Terminal 3: Launch Waypoint Follower
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 run waypoint_follower waypoint_follower
+```
+
+### Terminal 4: Launch Local Map Creator
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 0.0, y: 1.2, theta: 0.0}" -r 1
+```
+
+Exit
+
+### Terminal 5: Launch Waypoint Follower
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 run waypoint_follower waypoint_follower
+```
+
+### Task
+
+
+---
 
 # Lab 1
 ## Tutorial of Environment Setup of Unitree GO2
@@ -16,6 +125,22 @@
 ## Overview
 
 This repository provides an environment that can be run using Docker. The environment is designed to run specific software or tasks, and the following instructions will guide you through installing dependencies, setting up the Docker container, and running the necessary files.
+
+## Setup your SSH Key in your Github
+##### Step 0: Generate a new SSH key. Open a terminal and run:
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+For Mac you need also to do:
+```bash
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519                    
+```
+
+Then, add the SSH key to your GitHub account (New SSH key):
+```bash
+cat ~/.ssh/id_rsa.pub
+```
 
 ## Installation on Ubuntu
 ##### Step 1: Open a terminal and clone the repo:
@@ -768,41 +893,33 @@ You can also use the Command Palette:
 - Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on macOS).
 - Type and select `Docker: Attach Shell` or `Remote-Containers: Attach to Running Container`.
 
----
 
-# Lab 2
-## Waypoints, Wall Localization, Wall Following
+# BSD 3-Clause License
 
-### Initialise the robot and SLAM
-Firstly, one can start the robot with SLAM in the following way:
+Copyright (c) 2016-2025 Dimitrios Kanoulas
+All rights reserved.
 
-Open the first terminal to load the gazebo environment: 
-```bash
-xhost +
-sudo docker container start comp0244_unitree
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 launch go2_config gazebo_mid360.launch.py
-```
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-Open the second terminal to launch SLAM
-```bash
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
-```
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
 
-### Waypoints
-Open the third terminal to run the waypoint follower:
-```bash
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 run waypoint_follower waypoint_follower
-```
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
 
-Open the fourth terminal to publish your goal {x, y, theta} (w.r.t the odom frame). You can continuously update the goal to move the robot step by step:
-```bash
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.0, theta: 0.0}" -r 1
-```
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
