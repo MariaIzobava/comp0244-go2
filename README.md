@@ -15,10 +15,11 @@
 ### Pull recursively all repos and enter the docker to re-compile
 Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
 ```bash
-cd /home/$USER/comp0244_ws/comp0244-go2/src/waypoint_follower
-git checkout master
 cd /home/$USER/comp0244_ws/comp0244-go2/
 git pull --recurse-submodules
+cd /home/$USER/comp0244_ws/comp0244-go2/src/waypoint_follower
+git checkout master
+git pull
 sudo rm -rf build log install
 ```
 
