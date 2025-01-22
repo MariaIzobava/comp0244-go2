@@ -119,7 +119,7 @@ To visualize the local map, open the rviz2 window opened by step 1 and do the fo
 - Add the `Marker` topic `/local_map_lines`
 
 ### Task
-
+1. Understand what each parameter is doing and tune them accordingly to get lines align with the point clouds when straight walls and corners appear.
 
 ---
 
