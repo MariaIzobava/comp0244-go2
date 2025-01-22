@@ -102,7 +102,7 @@ source install/setup.bash
 ros2 run local_map_creator local_map_creator
 ```
 
-To visualize the local map, open the rviz2 windoe opened by step 1 and do the following:
+To visualize the local map, open the rviz2 window opened by step 1 and do the following:
 - Switch the Global Options to `Fixed Frame: base_link`
 - Add the `Marker` topic `/local_map_points`
 - Add the `Marker` topic `/local_map_lines`
