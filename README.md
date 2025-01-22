@@ -94,13 +94,18 @@ ros2 run waypoint_follower waypoint_follower
 ```
 
 ### Terminal 4: Launch Local Map Creator
+
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 0.0, y: 1.2, theta: 0.0}" -r 1
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash
+ros2 run local_map_creator local_map_creator
 ```
 
-Exit
+To visualize the local map, open the rviz2 windoe opened by step 1 and do the following:
+- Switch the Global Options to `Fixed Frame: base_link`
+- Add the `Marker` topic `/local_map_points`
+- Add the `Marker` topic `/local_map_lines`
 
 ### Terminal 5: Launch Waypoint Follower
 ```bash
