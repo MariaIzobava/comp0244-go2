@@ -20,6 +20,9 @@ git pull --recurse-submodules
 cd /home/$USER/comp0244_ws/comp0244-go2/src/waypoint_follower
 git checkout master
 git pull
+cd /home/$USER/comp0244_ws/comp0244-go2/src/local_map_creator
+git checkout master
+git pull
 sudo rm -rf build log install
 ```
 
