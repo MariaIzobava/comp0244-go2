@@ -67,8 +67,8 @@ ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 5.0, y: 0.78, theta: 0.0}" -r
 
 ### Task
 1. Move the robot to (x,y) = (0.0,1.2)
-2. Publish waypoints that move the robot around the obstacle.
-3. Make the theta angle work
+2. Publish waypoints that move the robot around the obstacle you are facing.
+3. Make the final theta angle goal work in the code.
 
 ## Line Detection
 ### Terminal 1: Launch Gazebo and RViz
