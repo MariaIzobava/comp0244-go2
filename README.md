@@ -47,6 +47,13 @@ cd /usr/app/comp0244_ws/comp0244-go2/scripts
 ros2 launch robot_launch.launch.py
 ```
 
+### Terminal 2: Publish a waypoint {x, y, theta} (w.r.t the odom frame)
+```bash
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 0.0, y: 1.2, theta: 2.1}" -r 1
+```
+
 ---
 
 # Lab 2
