@@ -20,5 +20,5 @@
 	path = src/edge_follower
 	url = git@github.com:COMP0244-S25/edge_follower.git
 [submodule "bug0_planner"]
-	path = bug0_planner
+	path = src/bug0_planner
 	url = git@github.com:COMP0244-S25/bug0_planner.git
