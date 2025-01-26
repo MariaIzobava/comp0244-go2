@@ -32,6 +32,12 @@ def generate_launch_description():
         cmd=['ros2', 'run', 'waypoint_follower', 'waypoint_follower'],
         output='screen'
     )
+    
+    # ros2 run local_map_creator local_map_creator
+    waypoint_follower_node = ExecuteProcess(
+        cmd=['ros2', 'run', 'local_map_creator', 'local_map_creator'],
+        output='screen'
+    )
 
     # segment groups
     gazebo_group = GroupAction([
