@@ -43,7 +43,6 @@ xhost +
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-cd /usr/app/comp0244_ws/comp0244-go2/scripts
 ros2 launch robot_launch.launch.py
 ```
 
@@ -52,6 +51,13 @@ ros2 launch robot_launch.launch.py
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 0.0, y: 1.2, theta: 3.14}" -r 1
+exit
+```
+
+### Terminal 2: Follow the wall
+```bash
+ros2 launch robot_launch.launch.py
+exit
 ```
 
 ---
