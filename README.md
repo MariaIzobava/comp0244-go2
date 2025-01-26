@@ -1,4 +1,5 @@
 # COMP0244 Labs
+[Lab 3: Wall Following](#Lab-3)
 
 [Lab 2: Waypoints, Wall Localization, Wall Following](#Lab-2)
 
@@ -6,11 +7,52 @@
 
 ---
 
+# Lab 3
+## Wall Following
+**Date:** 30/01/2025
+**Goal:** Move the Robot via Waypoints, Wall Localization to Follow the Walls of an obstacle: _we will check how to use the lidar-based fit lines of an obstacle to follow the wall/obstacle.__
+
+### Pull recursively all repos and enter the docker to re-compile
+Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
+```bash
+cd /home/$USER/comp0244_ws/comp0244-go2/src/waypoint_follower
+git checkout -f && git checkout master && git pull
+cd /home/$USER/comp0244_ws/comp0244-go2/src/local_map_creator
+git checkout -f && git checkout master && git pull
+cd /home/$USER/comp0244_ws/comp0244-go2
+git pull --recurse-submodules
+```
+
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+```
+
+```bash
+source /opt/ros/humble/setup.bash
+cd /usr/app/comp0244_ws/comp0244-go2
+colcon build
+source install/setup.bash
+```
+
+## Wall Follower
+### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+ros2 launch go2_config gazebo_mid360.launch.py
+```
+
+---
+
 # Lab 2
 ## Waypoints, Wall Localization
 **Date:** 23/01/2025
 
-**Goal:** Move the Robot via Waypoints, Wall Localization, and Wall Following: _we will first understand how to move the robot to a waypoint (x,y,θ). We will check how to use the lidar data to fit lines to the point cloud of a wall and using these lines to follow the wall/obstacle._
+**Goal:** Move the Robot via Waypoints, Wall Localization, and Wall Following: _we will first understand how to move the robot to a waypoint (x,y,θ). We will check how to use the lidar data to fit lines to the point cloud of a wall._
 
 ### Pull recursively all repos and enter the docker to re-compile
 Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
