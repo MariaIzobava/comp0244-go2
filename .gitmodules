@@ -16,3 +16,6 @@
 [submodule "src/local_map_creator"]
 	path = src/local_map_creator
 	url = git@github.com:COMP0244-S25/local_map_creator.git
+[submodule "src/edge_follower"]
+	path = src/edge_follower
+	url = git@github.com:COMP0244-S25/edge_follower.git
