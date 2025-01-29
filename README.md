@@ -11,7 +11,7 @@
 ## Wall Following
 **Date:** 30/01/2025
 
-**Goal:** Move the Robot via Waypoints, Wall Localization to Follow the Walls of an obstacle: _we will check how to use the lidar-based fit lines of an obstacle to follow the wall/obstacle.__
+**Goal:** Move the Robot via waypoints and wall localization to follow the walls of a convex obstacle: _we will check how to use the lidar-based fit lines of an obstacle to follow the wall/obstacle.__
 
 ### Pull recursively all repos and enter the docker to re-compile
 Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
@@ -40,10 +40,6 @@ colcon build
 source install/setup.bash
 ```
 
-### Tasks (we assume convex obstacles)
-1. Make the robot smoothly follow ccw the line of a straight wall.
-2. Make the robot turn into the corners and keep following the wall.
-
 ## Wall Follower
 ### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
@@ -67,6 +63,11 @@ Ctrl+C
 ```bash
 ros2 run edge_follower edge_follower
 ```
+### Tasks (we assume convex obstacles)
+1. Make the robot smoothly follow ccw the line of a straight wall.
+2. Make the robot turn into the corners and keep following the wall.
+
+
 ---
 
 # Lab 2
