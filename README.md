@@ -11,17 +11,20 @@
 ## Wall Following
 **Date:** 30/01/2025
 
-**Goal:** Move the Robot via Waypoints, Wall Localization to Follow the Walls of an obstacle: _we will check how to use the lidar-based fit lines of an obstacle to follow the wall/obstacle.__
+**Goal:** Move the Robot via waypoints and wall localization to follow the walls of a convex obstacle: _we will check how to use the lidar-based fit lines of an obstacle to follow the wall/obstacle.__
 
 ### Pull recursively all repos and enter the docker to re-compile
 Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
 ```bash
+cd /home/$USER/comp0244_ws/comp0244-go2
+git pull --recurse-submodules
 cd /home/$USER/comp0244_ws/comp0244-go2/src/waypoint_follower
 git checkout -f && git checkout master && git pull
 cd /home/$USER/comp0244_ws/comp0244-go2/src/local_map_creator
 git checkout -f && git checkout master && git pull
+cd /home/$USER/comp0244_ws/comp0244-go2/src/edge_follower
+git checkout -f && git checkout master && git pull
 cd /home/$USER/comp0244_ws/comp0244-go2
-git pull --recurse-submodules
 ```
 
 ```bash
@@ -32,6 +35,7 @@ sudo docker exec -it comp0244_unitree /bin/bash
 
 ```bash
 source /opt/ros/humble/setup.bash
+sudo apt-get install ros-humble-rviz2 ros-humble-turtle-tf2-py ros-humble-tf2-ros ros-humble-tf2-tools
 cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
@@ -44,6 +48,7 @@ xhost +
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+cd /usr/app/comp0244_ws/comp0244-go2/scripts
 ros2 launch robot_launch.launch.py
 ```
 
@@ -51,15 +56,18 @@ ros2 launch robot_launch.launch.py
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 0.0, y: 1.2, theta: 3.14}" -r 1
+ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 0.0, y: 1.0, theta: 3.14}" -r 1
 Ctrl+C
 ```
 
 ### Terminal 2: Follow the wall
 ```bash
-ros2 launch robot_launch.launch.py
-exit
+ros2 run edge_follower edge_follower
 ```
+### Tasks (we assume convex obstacles)
+1. Make the robot smoothly follow ccw the line of a straight wall.
+2. Make the robot turn into the corners and keep following the wall.
+
 
 ---
 
