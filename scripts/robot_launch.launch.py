@@ -74,4 +74,5 @@ def generate_launch_description():
         mapping_group,
         waypoint_follower_group,
         local_map_group,
+        static_tfe_group
     ])
