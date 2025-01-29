@@ -16,12 +16,15 @@
 ### Pull recursively all repos and enter the docker to re-compile
 Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
 ```bash
+cd /home/$USER/comp0244_ws/comp0244-go2
+git pull --recurse-submodules
 cd /home/$USER/comp0244_ws/comp0244-go2/src/waypoint_follower
 git checkout -f && git checkout master && git pull
 cd /home/$USER/comp0244_ws/comp0244-go2/src/local_map_creator
 git checkout -f && git checkout master && git pull
+cd /home/$USER/comp0244_ws/comp0244-go2/src/edge_follower
+git checkout -f && git checkout master && git pull
 cd /home/$USER/comp0244_ws/comp0244-go2
-git pull --recurse-submodules
 ```
 
 ```bash
