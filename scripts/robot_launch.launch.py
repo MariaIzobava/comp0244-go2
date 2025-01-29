@@ -45,7 +45,7 @@ def generate_launch_description():
     static_tf_node = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '0', '0', '0', '0', '0', 'odom', 'camera_init'],
+        arguments=['0', '0', '0', '1.57', '0', '0', 'body', 'odom'],
         output='screen'
     )
 
