@@ -2,6 +2,7 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, ExecuteProcess, GroupAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 import os
 
 def generate_launch_description():
@@ -39,6 +40,14 @@ def generate_launch_description():
         output='screen'
     )
 
+    # ros2 run static_tf_node to connect the robot with the camera
+    static_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '0', '0', '0', '0', 'odom', 'camera_init'],
+        output='screen'
+    )
+
     # segment groups
     gazebo_group = GroupAction([
         gazebo_launch
@@ -54,6 +63,10 @@ def generate_launch_description():
     
     local_map_group = GroupAction([
         local_map_node
+    ])
+
+    static_tfe_group = GroupAction([
+        static_tf_node
     ])
 
     return LaunchDescription([
