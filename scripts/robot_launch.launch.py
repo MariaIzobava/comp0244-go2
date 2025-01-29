@@ -65,7 +65,7 @@ def generate_launch_description():
         local_map_node
     ])
 
-    static_tfe_group = GroupAction([
+    static_tf_group = GroupAction([
         static_tf_node
     ])
 
@@ -74,5 +74,5 @@ def generate_launch_description():
         mapping_group,
         waypoint_follower_group,
         local_map_group,
-        static_tfe_group
+        static_tf_group
     ])
