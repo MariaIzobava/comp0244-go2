@@ -35,6 +35,7 @@ sudo docker exec -it comp0244_unitree /bin/bash
 
 ```bash
 source /opt/ros/humble/setup.bash
+sudo apt-get install ros-humble-rviz2 ros-humble-turtle-tf2-py ros-humble-tf2-ros ros-humble-tf2-tools
 cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
