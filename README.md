@@ -40,6 +40,10 @@ colcon build
 source install/setup.bash
 ```
 
+### Tasks (we assume convex obstacles)
+1. Make the robot smoothly follow ccw the line of a straight wall.
+2. Make the robot turn into the corners and keep following the wall.
+
 ## Wall Follower
 ### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
