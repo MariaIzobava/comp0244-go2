@@ -47,6 +47,7 @@ xhost +
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+cd /usr/app/comp0244_ws/comp0244-go2/scripts
 ros2 launch robot_launch.launch.py
 ```
 
