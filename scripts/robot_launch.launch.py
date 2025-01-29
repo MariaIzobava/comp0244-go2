@@ -13,7 +13,8 @@ def generate_launch_description():
                 'launch',
                 'gazebo_mid360.launch.py'
             )
-        )
+        ),
+        launch_arguments={'rviz': 'true'}.items()
     )
 
     # ros2 launch fast_lio mapping.launch.py
