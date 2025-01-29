@@ -56,7 +56,7 @@ ros2 launch robot_launch.launch.py
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: 0.0, y: 1.0, theta: 3.14}" -r 1
+ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: -1.0, y: 0.0, theta: 3.14}" -r 1
 Ctrl+C
 ```
 
@@ -65,9 +65,8 @@ Ctrl+C
 ros2 run edge_follower edge_follower
 ```
 ### Tasks (we assume convex obstacles)
-1. Make the robot smoothly follow ccw the line of a straight wall.
-2. Make the robot turn into the corners and keep following the wall.
-
+1. Make the robot work more smoothly based on the lines to follow the cylinder.
+2. Move the robot to {x: 0.0, y: 1.0, theta: 3.14} and make it see and turn into the corners and keep following the wall cw.
 
 ---
 
