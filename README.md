@@ -10,6 +10,7 @@
 # Lab 3
 ## Wall Following
 **Date:** 30/01/2025
+
 **Goal:** Move the Robot via Waypoints, Wall Localization to Follow the Walls of an obstacle: _we will check how to use the lidar-based fit lines of an obstacle to follow the wall/obstacle.__
 
 ### Pull recursively all repos and enter the docker to re-compile
