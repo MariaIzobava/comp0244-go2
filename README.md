@@ -18,6 +18,8 @@ Open the first terminal to pull recursively all repos, re-compile, and load the 
 ```bash
 cd /home/$USER/comp0244_ws/comp0244-go2
 git pull --recurse-submodules
+cd /home/$USER/comp0244_ws/comp0244-go2/src/FAST_LIO
+git checkout -f && git checkout comp0244 && git pull
 cd /home/$USER/comp0244_ws/comp0244-go2/src/waypoint_follower
 git checkout -f && git checkout master && git pull
 cd /home/$USER/comp0244_ws/comp0244-go2/src/local_map_creator
