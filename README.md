@@ -27,26 +27,71 @@
 ### Operating the Robot
 To operate the robot we will use two computers:
 
-#### Team 2: UCL Operator PC2, GO2 No.2, and Student's Computer
-1. Start the GO2 No.2:
+#### Team 1: UCL Operator PC3, GO2 No.1, and Student's Computer
+##### 1. Start the GO2 No.1:
 ```bash
 wait for about 30s to make sure the robot to be started
 ```
 
-2. UCL Operator PC2: open a new terminal: 
+##### 2. UCL Operator PC3: open a new terminal: 
+```bash
+source ~/opt/ros/foxy/setup.bash
+source ~/Documents/ros2_ws/install/setup.bash
+export ROBOT_IP="192.168.137.68" [todo: confirm the IP again]
+export CONN_TYPE="webrtc"
+ping 192.168.137.68
+```
+
+```bash
+ros2 launch go2_robot_sdk test.launch.py
+```
+
+##### 3. Student's computer:
+
+###### 3.1. Connect to the wifi Arvin with the password (see the note on the screen).
+
+###### 3.2. Open the docker environment:
+```bash
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /opt/ros/humble/setup.bash
+export ROBOT_IP="192.168.137.68"
+export CONN_TYPE="webrtc"
+ping 192.168.137.68
+```
+
+###### 3.3 Publish the velocity on the topic /cmd_vel to have the robot walk. Not not exceed 0.4m/s.
+```bash
+ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
+  linear: {x: 0.2, y: 0.0, z: 0.0},
+  angular: {x: 0.0, y: 0.0, z: 0.0}
+}'
+
+```
+
+#### Team 2: UCL Operator PC2, GO2 No.2, and Student's Computer
+##### 1. Start the GO2 No.2:
+```bash
+wait for about 30s to make sure the robot to be started
+```
+
+##### 2. UCL Operator PC2: open a new terminal: 
 ```bash
 conda deactivate
 source ~/Documents/ros2_ws/install/setup.bash
 export ROBOT_IP="192.168.1.3"
 export CONN_TYPE="webrtc"
 ping 192.168.1.3
+```
+```bash
 ros2 launch go2_robot_sdk test.launch.py
 ```
 
-3. Student's computer:
-Connect to the wifi NETGEAR52 with passcode xxxx(todo)
+##### 3. Student's computer:
 
-4. Open the docker environment:
+###### 3.1 Connect to the wifi NETGEAR52 with the password (see the note on the screen).
+
+###### 3.2 Open the docker environment:
 ```bash
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
@@ -56,7 +101,7 @@ export CONN_TYPE="webrtc"
 ping 192.168.1.3
 ```
 
-5. Publish the velocity on the topic /cmd_vel to have the robot walk. Not not exceed 0.4m/s.
+###### 3.3 Publish the velocity on the topic /cmd_vel to have the robot walk. Not not exceed 0.4m/s.
 ```bash
 ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
   linear: {x: 0.2, y: 0.0, z: 0.0},
