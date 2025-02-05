@@ -1,9 +1,39 @@
 # COMP0244 Labs
+[Lab 4: Real Robot Cmd Velocity](#Lab-4)
+
 [Lab 3: Wall Following](#Lab-3)
 
 [Lab 2: Waypoints, Wall Localization, Wall Following](#Lab-2)
 
 [Lab 1: Tutorial of Environment Setup of Unitree GO2](#Lab-1)
+
+---
+
+# Lab 4
+## Real Robot Cmd Velocity
+**Date:** 06/02/2025
+
+**Goal:** Move the real robot via command velocities: _we will see how to use the real robot in the lab.__
+
+### Safety
+1. Read carefully the instructions shared in moodle named: OPS-G07-SOP-Go2
+2. Make sure you understand how to insert a battery and how to turn the robot on/off.
+3. Make sure you understand how to use the two external controllers to move the robot, to stop it, and put it down.
+4. Make sure you need at least 3 people operating the robot: one controlling via the terminal, the other having the two controllers, and one on the crane.
+5. Do not put at any case fingers/jewleries/hair close to robot motors.
+6. Long and loose hair must be contained, Rings and jewellery must not be worn.	Budges or any other items risking being trapped in the motors must not be worn.
+7. Teams will be operating one by one.
+
+### Operating the Robot
+To operate the robot we will use two coomputers. One (ours) you do not need to touch it. We will have it ready for you. On your computer you need to:
+1. Connect to the Wifi (NETGEAR)
+2. Source ROS
+3. Command your velocity
+4. [Your computer] Disconnect from the Wifi to make sure you do not control the robot for the other teams.
+
+### Tasks
+1. Write a script that makes the robot move in a circle in the lab.
+2. Wrte a script that makes the robot move two time in a circle in the lab and then stop.
 
 ---
 
