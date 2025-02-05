@@ -28,10 +28,8 @@
 To operate the robot we will use two computers:
 
 #### Team 1: UCL Operator PC3, GO2 No.1, and Student's Computer
-##### 1. Start the GO2 No.1:
-```bash
-wait for about 30s to make sure the robot to be started
-```
+##### 1. Turn on the GO2 No.1
+Install the battery, double-click the batter switch, and wait for about 30s to make sure the robot to be started
 
 ##### 2. UCL Operator PC3: open a new terminal: 
 ```bash
@@ -60,7 +58,8 @@ export CONN_TYPE="webrtc"
 ping 192.168.137.68
 ```
 
-###### 3.3 Publish the velocity on the topic /cmd_vel to have the robot walk. Not not exceed 0.4m/s.
+###### 3.3 Publish the velocity on the topic /cmd_vel to have the robot walk. 
+NOTE: not exceed 0.4m/s for linear velocity.
 ```bash
 ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
   linear: {x: 0.2, y: 0.0, z: 0.0},
@@ -71,9 +70,7 @@ ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
 
 #### Team 2: UCL Operator PC2, GO2 No.2, and Student's Computer
 ##### 1. Start the GO2 No.2:
-```bash
-wait for about 30s to make sure the robot to be started
-```
+Install the battery, double-click the batter switch, and wait for about 30s to make sure the robot to be started
 
 ##### 2. UCL Operator PC2: open a new terminal: 
 ```bash
@@ -101,7 +98,8 @@ export CONN_TYPE="webrtc"
 ping 192.168.1.3
 ```
 
-###### 3.3 Publish the velocity on the topic /cmd_vel to have the robot walk. Not not exceed 0.4m/s.
+###### 3.3 Publish the velocity on the topic /cmd_vel to have the robot walk.
+NOTE: not exceed 0.4m/s for linear velocity.
 ```bash
 ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
   linear: {x: 0.2, y: 0.0, z: 0.0},
