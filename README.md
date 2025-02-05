@@ -37,6 +37,43 @@ To operate the robot we will use two coomputers. One (ours) you do not need to t
 
 ---
 
+
+### zqy changed:
+##### First pair: Ucl Operator PC2, GO2 No.2, and Student's Computer
+1. Start the GO2 No.2
+```bash
+wait for about 30s to make sure the robot to be started
+```
+3. Ucl Operator PC2: open a new terminal: 
+```bash
+conda deactivate
+source ~/Documents/ros2_ws/install/setup.bash
+export ROBOT_IP="192.168.1.3"
+export CONN_TYPE="webrtc"
+ping 192.168.1.3
+ros2 launch go2_robot_sdk test.launch.py
+```
+3. Student's computer
+connect the wifi NETGEAR52 with passcode xxxx(todo)
+
+open the docker environment
+```bash
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /opt/ros/humble/setup.bash
+```
+publish the velocity on the topic /cmd_vel
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist '{
+  linear: {x: 0.0, y: 0.0, z: 0.0},
+  angular: {x: 0.0, y: 0.0, z: 0.3}
+}'
+
+```
+##### UCL Operator PC 2
+
+
+
 # Lab 3
 ## Wall Following
 **Date:** 30/01/2025
