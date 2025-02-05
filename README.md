@@ -61,6 +61,9 @@ open the docker environment
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 source /opt/ros/humble/setup.bash
+export ROBOT_IP="192.168.1.3"
+export CONN_TYPE="webrtc"
+ping 192.168.1.3
 ```
 publish the velocity on the topic /cmd_vel
 ```bash
