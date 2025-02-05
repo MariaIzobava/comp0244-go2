@@ -25,26 +25,15 @@
 7. Teams will be operating one by one.
 
 ### Operating the Robot
-To operate the robot we will use two coomputers. One (ours) you do not need to touch it. We will have it ready for you. On your computer you need to:
-1. Connect to the Wifi (NETGEAR)
-2. Source ROS
-3. Command your velocity
-4. [Your computer] Disconnect from the Wifi to make sure you do not control the robot for the other teams.
+To operate the robot we will use two computers:
 
-### Tasks
-1. Write a script that makes the robot move in a circle in the lab.
-2. Wrte a script that makes the robot move two time in a circle in the lab and then stop.
-
----
-
-
-### zqy changed:
-##### First pair: Ucl Operator PC2, GO2 No.2, and Student's Computer
-1. Start the GO2 No.2
+#### Team 2: UCL Operator PC2, GO2 No.2, and Student's Computer
+1. Start the GO2 No.2:
 ```bash
 wait for about 30s to make sure the robot to be started
 ```
-3. Ucl Operator PC2: open a new terminal: 
+
+2. UCL Operator PC2: open a new terminal: 
 ```bash
 conda deactivate
 source ~/Documents/ros2_ws/install/setup.bash
@@ -53,11 +42,11 @@ export CONN_TYPE="webrtc"
 ping 192.168.1.3
 ros2 launch go2_robot_sdk test.launch.py
 ```
-3. Student's computer
 
-connect the wifi NETGEAR52 with passcode xxxx(todo)
+3. Student's computer:
+Connect to the wifi NETGEAR52 with passcode xxxx(todo)
 
-open the docker environment
+4. Open the docker environment:
 ```bash
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
@@ -66,7 +55,8 @@ export ROBOT_IP="192.168.1.3"
 export CONN_TYPE="webrtc"
 ping 192.168.1.3
 ```
-publish the velocity on the topic /cmd_vel
+
+5. Publish the velocity on the topic /cmd_vel to have the robot walk. Not not exceed 0.4m/s.
 ```bash
 ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
   linear: {x: 0.2, y: 0.0, z: 0.0},
@@ -74,9 +64,12 @@ ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
 }'
 
 ```
-##### UCL Operator PC 2
 
+### Tasks
+1. Write a script that makes the robot move in a circle in the lab.
+2. Write a script that makes the robot move two time in a circle in the lab and then stop.
 
+---
 
 # Lab 3
 ## Wall Following
