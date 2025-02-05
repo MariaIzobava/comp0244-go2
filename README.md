@@ -54,6 +54,7 @@ ping 192.168.1.3
 ros2 launch go2_robot_sdk test.launch.py
 ```
 3. Student's computer
+
 connect the wifi NETGEAR52 with passcode xxxx(todo)
 
 open the docker environment
