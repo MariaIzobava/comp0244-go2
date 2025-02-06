@@ -71,12 +71,16 @@ ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
 }'
 
 ```
+###### 3.4 IMPORTANT NOTE:
+```bash
+Do not forget to DISCONNECT the wifi once you finish the task
+```
 
 #### Team 2: UCL Operator PC2, GO2 No.2, and Student's Computer
 ##### 1. Start the GO2 No.2:
 Install the battery, double-click the batter switch, and wait for about 30s to make sure the robot to be started
 
-##### 2. UCL Operator PC2: open a new terminal:
+##### 2. UCL Operator PC2: 
 
 ###### 2.1. Connect to the wifi jjiaoiPhone with the password (see the note on the screen).
 
@@ -114,6 +118,10 @@ ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
   angular: {x: 0.0, y: 0.0, z: 0.0}
 }'
 
+```
+###### 3.4 IMPORTANT NOTE:
+```bash
+Do not forget to DISCONNECT the wifi once you finish the task
 ```
 
 ### Tasks
