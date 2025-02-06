@@ -76,13 +76,17 @@ ros2 topic pub /cmd_vel -r 10 geometry_msgs/msg/Twist '{
 ##### 1. Start the GO2 No.2:
 Install the battery, double-click the batter switch, and wait for about 30s to make sure the robot to be started
 
-##### 2. UCL Operator PC2: open a new terminal: 
+##### 2. UCL Operator PC2: open a new terminal:
+
+###### 2.1. Connect to the wifi jjiaoiPhone with the password (see the note on the screen).
+
+###### 2.2. Open a new terminal:
 ```bash
 conda deactivate
 source ~/Documents/ros2_ws/install/setup.bash
-export ROBOT_IP="192.168.1.3"
+export ROBOT_IP="172.20.10.3"
 export CONN_TYPE="webrtc"
-ping 192.168.1.3
+ping 172.20.10.3
 ```
 ```bash
 ros2 launch go2_robot_sdk test.launch.py
@@ -90,16 +94,16 @@ ros2 launch go2_robot_sdk test.launch.py
 
 ##### 3. Student's computer:
 
-###### 3.1 Connect to the wifi NETGEAR52 with the password (see the note on the screen).
+###### 3.1 Connect to the wifi jjiaoiPhone with the password (see the note on the screen).
 
 ###### 3.2 Open the docker environment:
 ```bash
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 source /opt/ros/humble/setup.bash
-export ROBOT_IP="192.168.1.3"
+export ROBOT_IP="172.20.10.3"
 export CONN_TYPE="webrtc"
-ping 192.168.1.3
+ping 172.20.10.3
 ```
 
 ###### 3.3 Publish the velocity on the topic /cmd_vel to have the robot walk.
