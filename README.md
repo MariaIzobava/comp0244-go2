@@ -35,9 +35,9 @@ Install the battery, double-click the batter switch, and wait for about 30s to m
 ```bash
 source ~/opt/ros/foxy/setup.bash
 source ~/Documents/ros2_ws/install/setup.bash
-export ROBOT_IP="192.168.137.68" [todo: confirm the IP again]
+export ROBOT_IP="172.20.10.6"
 export CONN_TYPE="webrtc"
-ping 192.168.137.68
+ping 172.20.10.6
 ```
 
 ```bash
@@ -53,9 +53,9 @@ ros2 launch go2_robot_sdk test.launch.py
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 source /opt/ros/humble/setup.bash
-export ROBOT_IP="192.168.137.68"
+export ROBOT_IP="172.20.10.6"
 export CONN_TYPE="webrtc"
-ping 192.168.137.68
+ping 172.20.10.6
 ```
 
 ###### 3.3 Publish the velocity on the topic /cmd_vel to have the robot walk. 
