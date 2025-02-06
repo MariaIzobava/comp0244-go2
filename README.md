@@ -31,7 +31,11 @@ To operate the robot we will use two computers:
 ##### 1. Turn on the GO2 No.1
 Install the battery, double-click the batter switch, and wait for about 30s to make sure the robot to be started
 
-##### 2. UCL Operator PC3: open a new terminal: 
+##### 2. UCL Operator PC3: 
+
+###### 2.1. Connect to the wifi Arvin with the password (see the note on the screen).
+
+###### 2.2. Open a new terminal:
 ```bash
 source ~/opt/ros/foxy/setup.bash
 source ~/Documents/ros2_ws/install/setup.bash
