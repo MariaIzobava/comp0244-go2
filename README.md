@@ -10,7 +10,7 @@
 ---
 
 # Lab 5
-## Real Robot Cmd Velocity
+## Real Robot ROS bag Record
 **Date:** 13/02/2025
 
 **Goal:** Record Sportmode state includes position, velcity, foot position, and other motion states of the robot.
