@@ -9,6 +9,29 @@
 
 ---
 
+# Lab 5
+## Real Robot Cmd Velocity
+**Date:** 13/02/2025
+
+**Goal:** Record Sportmode state includes position, velcity, foot position, and other motion states of the robot.
+
+**Document:** https://support.unitree.com/home/en/developer/ROS2_service
+
+### Operating the Robot and Connect the Screen of the Onboard Jetson Computer
+###### 1. Open a new terminal and check ROS message
+```bash
+source ~/opt/ros/foxy/setup.bash
+source ~/unitree_ros2/setup.sh
+ros2 topic echo /sportmodestate
+```
+###### 2. Record ROS bag
+```bash
+cd ~/ddata_comp0244_S25
+ros2 bag record /lowstate /sportmodestate
+```
+The rosbag will be stored in the folder.
+
+
 # Lab 4
 ## Real Robot Cmd Velocity
 **Date:** 06/02/2025
