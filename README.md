@@ -1,4 +1,6 @@
 # COMP0244 Labs
+[Lab 5: Real Robot ROS bag Record](#Lab-5)
+
 [Lab 4: Real Robot Cmd Velocity](#Lab-4)
 
 [Lab 3: Wall Following](#Lab-3)
@@ -11,14 +13,30 @@
 
 # Lab 5
 ## Real Robot ROS bag Record
-**Date:** 13/02/2025
+**Date:** 27/02/2025
 
 **Goal:** Record Sportmode state includes position, velcity, foot position, and other motion states of the robot.
 
 **Document:** https://support.unitree.com/home/en/developer/ROS2_service
 
-### Operating the Robot and Connect the Screen of the Onboard Jetson Computer
-###### 1. Open a new terminal and check ROS message
+### Operating the Robot Using Your Own Computer
+###### 1. Following the tutorial to setup your computer network and install necessary package
+[Tutorial Link](https://support.unitree.com/home/zh/developer/ROS2_service)
+Remember to use **humble** in commands, not **foxy**. Here are the summary of these commands (open the docker environment):
+```bash
+cd /usr/app/comp0244_ws/
+git clone https://github.com/unitreerobotics/unitree_ros2
+apt install vim net-tools
+apt update && apt install ros-humble-rmw-cyclonedds-cpp && apt install ros-humble-rosidl-generator-dds-idl -y
+cd unitree_ros2/cyclonedds_ws/src/
+git clone https://github.com/ros2/rmw_cyclonedds -b humble && git clone https://github.com/eclipse-cyclonedds/cyclonedds -b releases/0.10.x
+cd ../
+colcon build --packages-select cyclonedds
+source /opt/ros/humble/setup.bash
+colcon build
+```
+
+###### 2. Open a new terminal and check ROS message after installing the below
 ```bash
 source ~/opt/ros/foxy/setup.bash
 source ~/unitree_ros2/setup.sh
