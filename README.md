@@ -61,17 +61,16 @@ source /usr/app/comp0244_ws/unitree_ros2/setup.sh
 
 ###### 2. Open a new terminal and check ROS message after installing the below
 ```bash
-source ~/opt/ros/foxy/setup.bash
-source ~/unitree_ros2/setup.sh
+source /usr/app/comp0244_ws/unitree_ros2/setup.sh
 ros2 topic echo /sportmodestate
 ```
 ###### 3. Record ROS bag
 ```bash
-cd ~/ddata_comp0244_S25
+mkdir /usr/app/comp0244_ws/data_comp0244
+cd /usr/app/comp0244_ws/data_comp0244
 ros2 bag record /lowstate /sportmodestate
 ```
 The rosbag will be stored in the folder.
-
 
 # Lab 4
 ## Real Robot Cmd Velocity
