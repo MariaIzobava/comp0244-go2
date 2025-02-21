@@ -35,6 +35,29 @@ colcon build --packages-select cyclonedds
 source /opt/ros/humble/setup.bash
 colcon build
 ```
+Use the cable to connect the robot and your computer, and then configure the network follow the tutorial [here](https://support.unitree.com/home/zh/developer/ROS2_service)
+
+Check connection
+```
+ping 192.168.123.99
+```
+And modify the ```/usr/app/comp0244_ws/unitree_ros2/setup.bash``` with the below command.
+
+**Note**: ```eno2``` is the network card of your computer and should change:
+```
+#!/bin/bash
+echo "Setup unitree ros2 environment"
+source /opt/ros/humble/setup.bash
+source /usr/app/comp0244_ws/unitree_ros2/cyclonedds_ws/install/setup.bash
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+export CYCLONEDDS_URI='<CycloneDDS><Domain><General><Interfaces>
+                            <NetworkInterface name="eno2" priority="default" multicast="default" />
+                        </Interfaces></General></Domain></CycloneDDS>'
+```
+Setup unitree ros2 environment
+```
+source /usr/app/comp0244_ws/unitree_ros2/setup.sh
+```
 
 ###### 2. Open a new terminal and check ROS message after installing the below
 ```bash
@@ -42,7 +65,7 @@ source ~/opt/ros/foxy/setup.bash
 source ~/unitree_ros2/setup.sh
 ros2 topic echo /sportmodestate
 ```
-###### 2. Record ROS bag
+###### 3. Record ROS bag
 ```bash
 cd ~/ddata_comp0244_S25
 ros2 bag record /lowstate /sportmodestate
