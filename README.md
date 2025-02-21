@@ -70,7 +70,7 @@ mkdir /usr/app/comp0244_ws/data_comp0244
 cd /usr/app/comp0244_ws/data_comp0244
 ros2 bag record /lowstate /sportmodestate
 ```
-The rosbag will be stored in the folder.
+Please move the robot. If enough data are record, please enter ```Enter ctrl+C``` to exit. The rosbag will be stored in the folder.
 
 # Lab 4
 ## Real Robot Cmd Velocity
