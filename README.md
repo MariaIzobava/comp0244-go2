@@ -54,6 +54,7 @@ ros2 run waypoint_follower path_follower.py
 ros2 run waypoint_follower publish_eight_shape_path.py
 ```
 You can add ```/planner/path``` in the RVIZ. You can see the pre-set path (red) and the path (green) traversed by the robot.
+
 <img src="media/path_follower.png" alt="path_follower" width="50%">
 
 ### Real-World Robot
