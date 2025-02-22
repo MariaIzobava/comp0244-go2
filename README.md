@@ -86,6 +86,7 @@ Another terminal
 ros2 run unitree_go2_example forward_cmd_sport_mode_ctrl
 ```
 **NOTE**: If you want to try your own state estimation algorithm, please change ```/utlidar/robot_odom``` with your own odometry topic.
+
 **NOTE**: If you want to try your own path planning algorithm, please change ```ros2 run waypoint_follower publish_eight_shape_path``` with your own program and publish the same topic.
 
 # Lab 5
