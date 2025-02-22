@@ -1,4 +1,6 @@
 # COMP0244 Labs
+[Lab 6: Real Robot Path Following](#Lab-X)
+
 [Lab 5: Real Robot ROS bag Record](#Lab-5)
 
 [Lab 4: Real Robot Cmd Velocity](#Lab-4)
@@ -10,6 +12,78 @@
 [Lab 1: Tutorial of Environment Setup of Unitree GO2](#Lab-1)
 
 ---
+
+# Lab X
+###### 1. Installation the package
+```bash
+cd /usr/app/comp0244_ws/cmp0244-go2
+colcon build
+source install/setup.bash
+```
+
+### Simulation
+###### 1. Start the simulation
+```bash
+cd /usr/app/comp0244_ws/tutorial_env_go2
+source install/setup.bash
+ros2 launch go2_config gazebo_mid360.launch.py rviz:=true
+```
+Run the FAST-LIO
+```bash
+cd /usr/app/comp0244_ws/tutorial_env_go2
+source install/setup.bash
+ros2 launch fast_lio mapping.launch.py config_file:=unitree_go2_mid360.yaml
+```
+###### 2. Run the goalpose_follower.py and test whether the robot can move
+```bash
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash
+ros2 run waypoint_follower goalpose_follower
+```
+You can see the arrow (gree) given by the user and the path (green) traversed by the robot. 
+
+Press ```Ctrl+C``` to stop the goal pose follower.
+
+<img src="media/goalpose_follower.png" alt="goalpose_follower" width="50%">
+
+###### 3. Run the path_follower.py and test whether the robot can move along an eight shape
+```bash
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash
+ros2 run waypoint_follower path_follower.py
+ros2 run waypoint_follower publish_eight_shape_path.py
+```
+You can add ```/planner/path``` in the RVIZ. You can see the pre-set path (red) and the path (green) traversed by the robot.
+<img src="media/path_follower.png" alt="path_follower" width="50%">
+
+### Real-World Robot
+###### 1. Run the path_follower.py and test whether the robot can move along an eight shape
+```bash
+ros2 run waypoint_follower path_follower /utlidar/robot_odom
+ros2 run waypoint_follower publish_eight_shape_path 
+```
+Another terminal
+```bash
+ros2 run unitree_go2_example forward_cmd_sport_mode_ctrl
+```
+###### 2. Run the goalpose_follower.py and test whether the robot can move
+```bash
+ros2 run waypoint_follower goalpose_follower /utlidar/robot_odom
+```
+Another terminal
+```bash
+ros2 run unitree_go2_example forward_cmd_sport_mode_ctrl
+```
+Open the RVIZ and provide a goal pose
+###### 3. Run the path_follower.py and test whether the robot can move along an eight shape
+```bash
+ros2 run waypoint_follower path_follower /utlidar/robot_odom
+ros2 run waypoint_follower publish_eight_shape_path 
+```
+Another terminal
+```bash
+ros2 run unitree_go2_example forward_cmd_sport_mode_ctrl
+```
 
 # Lab 5
 ## Real Robot ROS bag Record
