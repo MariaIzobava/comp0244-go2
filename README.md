@@ -97,7 +97,7 @@ ros2 run unitree_go2_example forward_cmd_sport_mode_ctrl
 
 **Document:** https://support.unitree.com/home/en/developer/ROS2_service
 
-### Operating the Robot Using Your Own Computer
+### Operating the Robot Using Your Own External Computer
 ###### 1. Following the tutorial to setup your computer network and install necessary package
 [Tutorial Link](https://support.unitree.com/home/zh/developer/ROS2_service)
 Remember to use **humble** in commands, not **foxy**. Here are the summary of these commands (open the docker environment):
