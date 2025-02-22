@@ -75,7 +75,7 @@ Another terminal
 ```bash
 ros2 run unitree_go2_example forward_cmd_sport_mode_ctrl
 ```
-Open the RVIZ and provide a goal pose
+Open the RVIZ and provide a goal pose. And then press ```Ctrl+C``` to stop the goalpose_follower.py
 ###### 3. Run the path_follower.py and test whether the robot can move along an eight shape
 ```bash
 ros2 run waypoint_follower path_follower /utlidar/robot_odom
