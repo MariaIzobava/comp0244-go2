@@ -17,8 +17,8 @@ class EdgeFollowerNode(Node):
 
         # Constants
         self.SAFETY_MARGIN = 1.0  # meters
-        self.INCREMENT_DISTANCE = 0.8  # meters
-        self.UPDATE_RATE = 1  # seconds
+        self.INCREMENT_DISTANCE = 1.0  # meters
+        self.UPDATE_RATE = 1.0  # seconds
 
         # State variables
         self.current_x = 0.0
@@ -129,23 +129,6 @@ class EdgeFollowerNode(Node):
         for i in range(len(points) - 1):
             self.current_edges.append((points[i], points[i + 1]))
 
-    def get_edge_direction(self, edges, current_index, window_size=5):
-        start_idx = max(0, current_index - window_size // 2)
-        end_idx = min(len(edges), current_index + window_size // 2 + 1)
-
-        directions = []
-        for i in range(start_idx, end_idx - 1):
-            start, end = edges[i]
-            vec = end - start
-            if np.linalg.norm(vec) > 0.01:
-                directions.append(vec / np.linalg.norm(vec))
-
-        if not directions:
-            return None
-
-        avg_direction = np.mean(directions, axis=0)
-        return avg_direction / np.linalg.norm(avg_direction)
-
     def find_next_waypoint(self):
         """Find closest edge and calculate next waypoint"""
         if not self.current_edges:
@@ -200,10 +183,6 @@ class EdgeFollowerNode(Node):
         start_point, end_point = closest_edge
         edge_vector = end_point - start_point
         edge_direction = edge_vector / np.linalg.norm(edge_vector)
-
-        # avg_direction = self.get_edge_direction(self.current_edges, closest_edge_index)
-        # if avg_direction is not None:
-        #     edge_direction = avg_direction
 
         # Vector from closest point to robot
         to_robot = robot_pos - closest_point
@@ -269,7 +248,7 @@ class EdgeFollowerNode(Node):
                         reached_end = -1
                         break
 
-        current_point += reached_end * edge_direction * self.INCREMENT_DISTANCE
+        current_point += reached_end * edge_direction * self.INCREMENT_DISTANCE * 1.5
 
         # Store the incremented point (green dot)
         self.incremented_point = current_point
