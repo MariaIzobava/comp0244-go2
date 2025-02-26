@@ -43,7 +43,11 @@ class Bug1Algorithm(Node):
 
         # Publisher.
         self.waypoint_pub = self.create_publisher(Pose2D, '/waypoint', 10)
-        self.waypoint_pub = self.create_publisher(True, 'suppress_edge_follower', 10)
+        
+        self.waypoint_pub = self.create_publisher(Bool, 'suppress_edge_follower', 10)
+        msg = Bool()
+        msg.data = True  
+        self.waypoint_pub.publish(msg)
 
 
     def calculate_distance(self, p1, p2):
