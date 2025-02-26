@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'bug0 = cw1_team_9.bug0_walker:main',
             'bug1 = cw1_team_9.bug1_walker:main',
+            'go_to_point = cw1_team_9.go_to_point:main',
             'edge_follower = cw1_team_9.edge_follower:main'
         ],
     },
