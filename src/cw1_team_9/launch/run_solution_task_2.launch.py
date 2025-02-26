@@ -65,13 +65,6 @@ def generate_launch_description():
         parameters=[{"use_sim_time": use_sim_time}]
     )
 
-    edge_follower_node = Node(
-        package='cw1_team_9',
-        executable='edge_follower',
-        output='screen',
-        parameters=[{"use_sim_time": use_sim_time}]
-    )
-
     bug0_walker_node = Node(
         package='cw1_team_9',
         executable='bug0',
@@ -94,7 +87,6 @@ def generate_launch_description():
     ])
     waypoint_follower_group = GroupAction([
         waypoint_follower_node,
-        edge_follower_node,
         bug0_walker_node
     ])
 

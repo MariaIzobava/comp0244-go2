@@ -1,10 +1,8 @@
+import math
 import rclpy
 import numpy as np
+
 from rclpy.node import Node
-from collections import deque
-import math
-
-
 from std_msgs.msg import String
 from nav_msgs.msg import Odometry
 from dataclasses import dataclass
@@ -18,6 +16,7 @@ from std_msgs.msg import ColorRGBA
 class Point2D:
     x: float
     y: float
+
 
 def ccw(A,B,C):
     return (C.y-A.y) * (B.x-A.x) > (B.y-A.y) * (C.x-A.x)
@@ -39,14 +38,18 @@ class Bug0Walker(Node):
         super().__init__('bug0_node')
         self.get_logger().info('Bug0: I am ready')
 
+        self.SAFETY_MARGIN = 1.0  # meters
+        self.INCREMENT_DISTANCE = 0.7 # meters
         self.UPDATE_RATE = 0.5  # seconds
 
         self.goal_x = None
         self.goal_y = None
         self.goal_theta = None
+
+        # Helper fields
         self.walking_type = STAY
-        self.arrived = True
-        self._obstructive_segments = deque()
+        self.obstructive_segment = None
+        self.current_edges = None
 
         # Robot current state
         self.current_x = 0.0
@@ -56,7 +59,6 @@ class Bug0Walker(Node):
 
         # Publishers
         self.waypoint_pub = self.create_publisher(Pose2D, 'waypoint', 10)
-        self.pause_edge_follower_pub = self.create_publisher(Bool, 'pause_edge_follower', 10)
         self.edge_marker_pub = self.create_publisher(Marker, 'detected_edges', 10)
         self.goal_vector_pub = self.create_publisher(Marker, 'goal_vector', 10)
 
@@ -87,9 +89,6 @@ class Bug0Walker(Node):
         """
         Updates the target waypoint when a new message is received.
         """
-        if self.goal_x==None or abs(self.goal_x-msg.x) > 0.2 or abs(self.goal_y-msg.y) > 0.2 or abs(self.goal_theta-msg.theta) > 0.2:
-            self.arrived = False
-
         self.goal_x = msg.x
         self.goal_y = msg.y
         self.goal_theta = msg.theta
@@ -111,11 +110,6 @@ class Bug0Walker(Node):
         cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z)
         self.current_orientation = math.atan2(siny_cosp, cosy_cosp)
 
-        # Adjusting current position to the center of the robot. The lidar 
-        # is located on its head.
-        self.current_x -= math.cos(self.current_orientation) * 0.2
-        self.current_y -= math.sin(self.current_orientation) * 0.2
-
 
     def timer_callback(self):
         """Main control loop"""
@@ -125,9 +119,40 @@ class Bug0Walker(Node):
             self.get_logger().info('Bug0: Stay put. No GOAL yet.')
             return
 
-        A = Point2D(self.current_x, self.current_y)
-        B = Point2D(self.goal_x, self.goal_y)
+        A, B = self.get_goal_vector()
+        goal_vector_marker = self.get_segment_marker(A, B, ColorRGBA(r=0.0, g=1.0, b=0.0, a=1.0))
 
+        self.goal_vector_pub.publish(goal_vector_marker)
+
+        if self.obstructive_segment:
+            C = self.obstructive_segment[0]
+            D = self.obstructive_segment[1]
+            if not intersect(A, B, C, D):
+                self.obstructive_segment = None
+
+        if self.obstructive_segment is None:
+            if self.walking_type != STRAIGHT:
+                 self.get_logger().info("START STRAIGHT: no more obstacles")
+            self.go_straight()
+        else:
+            if self.walking_type != AROUND:
+                self.get_logger().info("START AROUND: found an obstacle")
+            self.go_around()
+
+
+    def get_goal_vector(self):
+        # Adjusting current position to the BACK of the robot. The lidar 
+        # is located on its head so the odometry is related to it.
+        robot_center_x = self.current_x - math.cos(self.current_orientation) * 0.5
+        robot_center_y = self.current_y - math.sin(self.current_orientation) * 0.5
+        local_a = self.transform_to_base_link([robot_center_x, robot_center_y])
+        local_b = self.transform_to_base_link([self.goal_x, self.goal_y])
+        A = Point2D(local_a[0], local_a[1])
+        B = Point2D(local_b[0], local_b[1])
+        return (A, B)
+
+
+    def get_segment_marker(self, a: Point2D, b: Point2D, color: ColorRGBA):
         edge_marker = Marker()
         edge_marker.header.frame_id = "livox"
         edge_marker.header.stamp = self.get_clock().now().to_msg()
@@ -135,112 +160,218 @@ class Bug0Walker(Node):
         edge_marker.action = Marker.ADD
         edge_marker.id = 0
         edge_marker.scale.x = 0.05
-        edge_marker.color = ColorRGBA(r=0.0, g=1.0, b=0.0, a=1.0)
-        edge_marker.points.append(Point(x=A.x, y=A.y, z=0.0))
-        edge_marker.points.append(Point(x=B.x, y=B.y, z=0.0))
-        self.goal_vector_pub.publish(edge_marker)
+        edge_marker.color = color
+        edge_marker.points.append(Point(x=float(a.x), y=float(a.y), z=0.0))
+        edge_marker.points.append(Point(x=float(b.x), y=float(b.y), z=0.0))
+        return edge_marker
 
-        self.get_logger().info(f'PUBLISHING: {A} {B}')
-
-        while len(self._obstructive_segments) > 0:
-            segment = self._obstructive_segments.popleft()
-            C = segment[0]
-            D = segment[1]
-            if intersect(A, B, C, D):
-                self._obstructive_segments.appendleft(segment)
-                break
-            else:
-                self.get_logger().info(f"NO LONGER INTERSECTS: {A} {B} {C} {D}")
-
-        if len(self._obstructive_segments) == 0:
-            if self.walking_type == STRAIGHT:
-                 self.get_logger().info("KEEP STRAIGHT: no obstacles")
-            else:
-                self.get_logger().info("START STRAIGHT: no more obstacles")
-                self.go_with_waypoint_follower()
-        else:
-            if self.walking_type == AROUND:
-                self.get_logger().info("KEEP AROUND: there is an obstacle")
-            else:
-                self.get_logger().info("START AROUND: found an obstacle")
-                self.go_with_edge_follower()
                 
+    def transform_to_camera_init(self, point):
+        """Transform a point from livox to camera_init frame, which is our fixed world frame"""
+        # Rotation matrix
+        c = math.cos(self.current_orientation)
+        s = math.sin(self.current_orientation)
+        
+        # Transform point
+        x = point[0] * c - point[1] * s + self.current_x
+        y = point[0] * s + point[1] * c + self.current_y
+        
+        return np.array([x, y])
+
+
+    def transform_to_base_link(self, point):
+        """Transform a point from camera_init to livox frame"""
+        # Translate to origin
+        dx = point[0] - self.current_x
+        dy = point[1] - self.current_y
+        
+        # Rotation matrix inverse
+        c = math.cos(-self.current_orientation)
+        s = math.sin(-self.current_orientation)
+        
+        # Transform point
+        x = dx * c - dy * s
+        y = dx * s + dy * c
+        
+        return np.array([x, y])
         
 
-    # This is the main callback which decides what the robot should do:
-    # 1. follow straight towards the goal
-    # 2. go around the edge of an obstacle
-    #
-    # We decide by checking whether any of the segments we see in front of us 
-    # intersect with our straight route towards the goal.
     def line_callback(self, msg):
         """Process incoming line segments"""
 
         if self.goal_x is None:
             return
 
+        if len(msg.points) < 2:
+            return
+
+        A, B = self.get_goal_vector()
+
         # Convert line points to numpy arrays
         points = [np.array([point.x, point.y]) for point in msg.points]
 
-        A = Point2D(self.current_x, self.current_y)
-        B = Point2D(self.goal_x, self.goal_y)
-
+        # Create a single segment by taking the first and the last points
+        # from the given line. 
+        # NOTE: This approach might not work for concave objects!
         start_point = points[0]
         end_point = points[len(points) - 1]
-        safety_margin_angle = math.atan2(end_point[1] - start_point[1], end_point[0] - start_point[0])
-        safety_margin_x = 1.0 * math.cos(safety_margin_angle)
-        safety_margin_y = 1.0 * math.sin(safety_margin_angle)
 
+        # Extending the segment from both sides for safety.
+        safety_margin_angle = math.atan2(end_point[1] - start_point[1], end_point[0] - start_point[0])
+        safety_margin_x = 0.2 * math.cos(safety_margin_angle)
+        safety_margin_y = 0.2 * math.sin(safety_margin_angle)
         C = Point2D(start_point[0] - safety_margin_x, start_point[1] - safety_margin_y)
         D = Point2D(end_point[0] + safety_margin_x, end_point[1] + safety_margin_y)
 
         if intersect(A, B, C, D):
-            self.get_logger().info("INTERSECTS!")
-            self._obstructive_segments.append([C, D])
+            # If the segment intersects with our vector to the GOAL we use
+            # it as a new obstructive segment around which we need to go.
+            self.obstructive_segment = [C, D]
+            self.current_edges = []
+            for i in range(len(points) - 1):
+                self.current_edges.append((points[i], points[i+1]))
 
-            # Detected edges
-            edge_marker = Marker()
-            edge_marker.header.frame_id = "livox"
-            edge_marker.header.stamp = self.get_clock().now().to_msg()
-            edge_marker.type = Marker.LINE_LIST
-            edge_marker.action = Marker.ADD
-            edge_marker.id = 0
-            edge_marker.scale.x = 0.05
-            edge_marker.color = ColorRGBA(r=1.0, g=1.0, b=0.0, a=1.0)
-            
-            edge_marker.points.append(Point(x=C.x, y=C.y, z=0.0))
-            edge_marker.points.append(Point(x=D.x, y=D.y, z=0.0))
-
-
-            
+            edge_marker = self.get_segment_marker(C, D, ColorRGBA(r=1.0, g=1.0, b=0.0, a=1.0))
             self.edge_marker_pub.publish(edge_marker)
+
         else:
-            self.get_logger().info("DON'T INTERSECT!")
-            self._obstructive_segments.append([C, D])
-
-            # Detected edges
-            edge_marker = Marker()
-            edge_marker.header.frame_id = "livox"
-            edge_marker.header.stamp = self.get_clock().now().to_msg()
-            edge_marker.type = Marker.LINE_LIST
-            edge_marker.action = Marker.ADD
-            edge_marker.id = 0
-            edge_marker.scale.x = 0.05
-            edge_marker.color = ColorRGBA(r=1.0, g=0.0, b=0.0, a=1.0)
-            
-            edge_marker.points.append(Point(x=C.x, y=C.y, z=0.0))
-            edge_marker.points.append(Point(x=D.x, y=D.y, z=0.0))
-            
+            edge_marker = self.get_segment_marker(C, D, ColorRGBA(r=1.0, g=0.0, b=0.0, a=1.0))
             self.edge_marker_pub.publish(edge_marker)
 
 
-    def go_with_waypoint_follower(self):
-        # 1. Stop following the edge
-        p = Bool()
-        p.data = True
-        self.pause_edge_follower_pub.publish(p)
+    # This function is full copy from original edge_follower node
+    def find_next_waypoint(self):
+        """Find closest edge and calculate next waypoint"""
+        if not self.current_edges:
+            return None
+            
+        # Robot is at origin in livox frame
+        robot_pos = np.array([0.0, 0.0])
+        
+        # First find the closest point on any edge segment
+        closest_edge = None
+        closest_point = None
+        min_distance = float('inf')
+        closest_edge_index = 0
+        
+        for i, edge in enumerate(self.current_edges):
+            start_point, end_point = edge
+            
+            # Calculate edge vector
+            edge_vector = end_point - start_point
+            edge_length = np.linalg.norm(edge_vector)
+            
+            if edge_length < 0.01:  # Skip very short edges
+                continue
+                
+            # Normalize edge vector
+            edge_direction = edge_vector / edge_length
+            
+            # Vector from start point to robot
+            to_robot = robot_pos - start_point
+            
+            # Project robot position onto edge line
+            projection = np.dot(to_robot, edge_direction)
+            projection = max(0, min(edge_length, projection))
+            point_on_edge = start_point + projection * edge_direction
+            
+            # Calculate distance to edge
+            distance = np.linalg.norm(point_on_edge - robot_pos)
+            
+            if distance < min_distance:
+                min_distance = distance
+                closest_edge = edge
+                closest_point = point_on_edge
+                closest_edge_index = i
+        
+        if closest_edge is None:
+            return None
 
-        # 2. Publish the GOAL as the next waypoint
+        # Store the closest point (red dot)
+        self.closest_edge_point = closest_point
+
+        # Now move clockwise along the continuous edge by INCREMENT_DISTANCE
+        start_point, end_point = closest_edge
+        edge_vector = end_point - start_point
+        edge_direction = edge_vector / np.linalg.norm(edge_vector)
+        
+        # Vector from closest point to robot
+        to_robot = robot_pos - closest_point
+        
+        # Determine cw direction using cross product
+        cross_z = edge_direction[0] * to_robot[1] - edge_direction[1] * to_robot[0]
+        moving_forward = cross_z > 0
+        
+        # Move along edges to find increment point
+        current_index = closest_edge_index
+        increment_left = self.INCREMENT_DISTANCE
+        current_point = closest_point
+        
+        if moving_forward:
+            while increment_left > 0 and current_index < len(self.current_edges):
+                current_edge = self.current_edges[current_index]
+                start, end = current_edge
+                remaining_distance = np.linalg.norm(end - current_point)
+                
+                if increment_left <= remaining_distance:
+                    # We can reach our point on this edge
+                    edge_direction = (end - start) / np.linalg.norm(end - start)
+                    current_point = current_point + edge_direction * increment_left
+                    break
+                else:
+                    # Move to next edge
+                    increment_left -= remaining_distance
+                    current_index += 1
+                    if current_index >= len(self.current_edges):
+                        # If we reach the end, stay at the last point
+                        current_index = len(self.current_edges) - 1
+                        current_point = self.current_edges[current_index][1]
+                        break
+        else:
+            while increment_left > 0 and current_index >= 0:
+                current_edge = self.current_edges[current_index]
+                start, end = current_edge
+                remaining_distance = np.linalg.norm(current_point - start)
+                
+                if increment_left <= remaining_distance:
+                    # We can reach our point on this edge
+                    edge_direction = (end - start) / np.linalg.norm(end - start)
+                    current_point = current_point - edge_direction * increment_left
+                    break
+                else:
+                    # Move to previous edge
+                    increment_left -= remaining_distance
+                    current_index -= 1
+                    if current_index < 0:
+                        # If we reach the start, stay at the first point
+                        current_index = 0
+                        current_point = self.current_edges[current_index][0]
+                        break
+
+        # Store the incremented point (green dot)
+        self.incremented_point = current_point
+        
+        # Get the edge direction at the incremented point
+        current_edge = self.current_edges[current_index]
+        start, end = current_edge
+        edge_direction = (end - start) / np.linalg.norm(end - start)
+        
+        # Calculate perpendicular vector (rotate edge_direction 90 degrees)
+        perpendicular = np.array([-edge_direction[1], edge_direction[0]])
+        
+        # Check which side the robot is on
+        to_robot = robot_pos - current_point
+        if np.dot(perpendicular, to_robot) < 0:
+            perpendicular = -perpendicular  # Flip if needed to point toward robot's side
+            
+        # Calculate waypoint by projecting perpendicular to the edge
+        waypoint = current_point + perpendicular * self.SAFETY_MARGIN
+        
+        return waypoint
+
+
+    def go_straight(self):
+        # Publish the GOAL as the next waypoint
         waypoint_msg = Pose2D()
         waypoint_msg.x = float(self.goal_x)
         waypoint_msg.y = float(self.goal_y)
@@ -248,16 +379,23 @@ class Bug0Walker(Node):
         self.waypoint_pub.publish(waypoint_msg)
         self.walking_type = STRAIGHT
 
-        self.get_logger().info('Bug0: START going STRAIGHT, no obstacles.')
 
-
-    def go_with_edge_follower(self):
-        # Start following the nearest edge
-        p = Bool()
-        p.data = False
-        self.pause_edge_follower_pub.publish(p)
+    def go_around(self):
         self.walking_type = AROUND
-        self.get_logger().info('Bug0: START going AROUND the obstacle.')
+
+        next_waypoint = self.find_next_waypoint()
+        
+        # Publish waypoint if valid
+        if next_waypoint is not None:
+            waypoint_msg = Pose2D()
+            waypoint_camera_init = self.transform_to_camera_init(next_waypoint)
+            waypoint_msg.x = float(waypoint_camera_init[0])
+            waypoint_msg.y = float(waypoint_camera_init[1])
+            waypoint_msg.theta = self.current_orientation  # Keep current orientation
+            
+            self.waypoint_pub.publish(waypoint_msg)
+        else:
+            self.get_logger().info("NO waypoint!")
 
 
 def main(args=None):
