@@ -83,7 +83,7 @@ def generate_launch_description():
 
     # Edge Follower Node
     edge_follower_node = Node(
-        package='cw1_team_9',
+        package='edge_follower',
         executable='edge_follower',
         name='edge_follower',
         parameters=[{"use_sim_time": use_sim_time}]
