@@ -37,11 +37,14 @@ class Bug1Algorithm(Node):
 
         # Subscriptions.
         self.create_subscription(Pose2D, '/gotopoint_waypoint', self.gotopoint_callback, 10)
-        self.create_subscription(Pose2D, '/edge_waypoint', self.edge_callback, 10)
+        # Change suppressed_waypoint to /edge_waypoint if using default clockwise edge_follower
+        self.create_subscription(Pose2D, "suppressed_waypoint", self.edge_callback, 10)
         self.create_subscription(Bool, '/obstacle_flag', self.flag_callback, 10)
 
         # Publisher.
         self.waypoint_pub = self.create_publisher(Pose2D, '/waypoint', 10)
+        self.waypoint_pub = self.create_publisher(True, 'suppress_edge_follower', 10)
+
 
     def calculate_distance(self, p1, p2):
         """Compute Euclidean distance between two points (each a tuple (x,y))."""
