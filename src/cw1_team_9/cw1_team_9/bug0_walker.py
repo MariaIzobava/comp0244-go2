@@ -42,6 +42,24 @@ class Bug0Walker(Node):
         self.INCREMENT_DISTANCE = 0.7 # meters
         self.UPDATE_RATE = 0.5  # seconds
 
+        # This value is used both for waypoint overshoot (needed when we
+        # walk along the cube-like objects) and for "goal vector" start
+        # point adjustment. Value for overshoot must not be smaller than
+        # value for adjustment. It's obvious when looking at the visualised
+        # goal vector and detected edge. 0.4 was picked empirically 
+        # and should satisfy both cases.  
+        self.WAYPOINT_OVERSHOOT = 0.4  # meters 
+
+        # This value is used to "extend" detected edge when checking
+        # for its intersection with the goal vector. Without it
+        # the robot stops going around the obstacle too soon
+        # and can touch the obstacle. 0.2 is also pretty small value, 
+        # looks like it's just half of the width of the robot so it still
+        # walks rather close to the obstacle. However, during the testing
+        # it was enough for the robot not to touch the obstacle. Try increasing
+        # it if the robot bumps into something:) 
+        self.SAFETY_SEGMENT = 0.2  # meters
+
         self.goal_x = None
         self.goal_y = None
         self.goal_theta = None
@@ -155,8 +173,8 @@ class Bug0Walker(Node):
     def get_goal_vector(self):
         # Adjusting current position to the BACK of the robot. The lidar 
         # is located on its head so the odometry is related to it.
-        robot_center_x = self.current_x - math.cos(self.current_orientation) * 0.5
-        robot_center_y = self.current_y - math.sin(self.current_orientation) * 0.5
+        robot_center_x = self.current_x - math.cos(self.current_orientation) * self.WAYPOINT_OVERSHOOT
+        robot_center_y = self.current_y - math.sin(self.current_orientation) * self.WAYPOINT_OVERSHOOT
         local_a = self.transform_to_base_link([robot_center_x, robot_center_y])
         local_b = self.transform_to_base_link([self.goal_x, self.goal_y])
         A = Point2D(local_a[0], local_a[1])
@@ -226,16 +244,14 @@ class Bug0Walker(Node):
         # Convert line points to numpy arrays
         points = [np.array([point.x, point.y]) for point in msg.points]
 
-        # Create a single segment by taking the first and the last points
-        # from the given line. 
-        # NOTE: This approach might not work for concave objects!
+        # Take the first and the last points of the edge.
         start_point = points[0]
         end_point = points[len(points) - 1]
 
         # Extending the segment from both sides for safety.
         safety_margin_angle = math.atan2(end_point[1] - start_point[1], end_point[0] - start_point[0])
-        safety_margin_x = 0.2 * math.cos(safety_margin_angle)
-        safety_margin_y = 0.2 * math.sin(safety_margin_angle)
+        safety_margin_x = self.SAFETY_SEGMENT * math.cos(safety_margin_angle)
+        safety_margin_y = self.SAFETY_SEGMENT * math.sin(safety_margin_angle)
 
         start_point_C = Point2D(start_point[0], start_point[1])
         end_point_C = Point2D(end_point[0], end_point[1])
@@ -261,7 +277,7 @@ class Bug0Walker(Node):
         intersects = intersect(A, B, safety_edges[1][0], safety_edges[1][1]) or intersects
 
         if intersects:
-            # If the segment intersects with our vector to the GOAL we use
+            # If the segment intersects with our goal vector we use
             # it as a new obstructive segment around which we need to go.
             self.has_obstructive_segment = True
             self.current_edges = edges
@@ -407,6 +423,13 @@ class Bug0Walker(Node):
             
         # Calculate waypoint by projecting perpendicular to the edge
         waypoint = current_point + perpendicular * self.SAFETY_MARGIN
+
+        if moving_forward:
+            waypoint[0] += self.WAYPOINT_OVERSHOOT * math.cos(math.atan2(edge_direction[1], edge_direction[0]))
+            waypoint[0] += self.WAYPOINT_OVERSHOOT * math.sin(math.atan2(edge_direction[1], edge_direction[0]))
+        else:
+            waypoint[0] -= self.WAYPOINT_OVERSHOOT * math.cos(math.atan2(edge_direction[1], edge_direction[0]))
+            waypoint[0] -= self.WAYPOINT_OVERSHOOT * math.sin(math.atan2(edge_direction[1], edge_direction[0]))
         
         return waypoint
 
