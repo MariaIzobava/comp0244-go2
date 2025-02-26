@@ -48,8 +48,9 @@ class Bug0Walker(Node):
 
         # Helper fields
         self.walking_type = STAY
-        self.obstructive_segment = None
+        self.has_obstructive_segment = False
         self.current_edges = None
+        self.current_edge_safety_margins = None
 
         # Robot current state
         self.current_x = 0.0
@@ -121,16 +122,27 @@ class Bug0Walker(Node):
 
         A, B = self.get_goal_vector()
         goal_vector_marker = self.get_segment_marker(A, B, ColorRGBA(r=0.0, g=1.0, b=0.0, a=1.0))
-
         self.goal_vector_pub.publish(goal_vector_marker)
 
-        if self.obstructive_segment:
-            C = self.obstructive_segment[0]
-            D = self.obstructive_segment[1]
-            if not intersect(A, B, C, D):
-                self.obstructive_segment = None
+        if self.has_obstructive_segment:
+            intersects = False
+            for edge in self.current_edges:
+                C = Point2D(edge[0][0], edge[0][1])
+                D = Point2D(edge[1][0], edge[1][1])
+                if intersect(A, B, C, D):
+                    intersects = True
+                    break
 
-        if self.obstructive_segment is None:
+            if not intersects:
+                # Also checking safety margins so the robot doesn't walk too close
+                # to the obstacle when finally sees the GOAL:
+                intersects = intersect(A, B, self.current_edge_safety_margins[0][0], self.current_edge_safety_margins[0][1]) or intersects
+                intersects = intersect(A, B, self.current_edge_safety_margins[1][0], self.current_edge_safety_margins[1][1]) or intersects
+
+            if not intersects:
+                self.has_obstructive_segment = False
+
+        if not self.has_obstructive_segment:
             if self.walking_type != STRAIGHT:
                  self.get_logger().info("START STRAIGHT: no more obstacles")
             self.go_straight()
@@ -152,7 +164,7 @@ class Bug0Walker(Node):
         return (A, B)
 
 
-    def get_segment_marker(self, a: Point2D, b: Point2D, color: ColorRGBA):
+    def get_empty_segment_marker(self, color: ColorRGBA):
         edge_marker = Marker()
         edge_marker.header.frame_id = "livox"
         edge_marker.header.stamp = self.get_clock().now().to_msg()
@@ -161,6 +173,10 @@ class Bug0Walker(Node):
         edge_marker.id = 0
         edge_marker.scale.x = 0.05
         edge_marker.color = color
+        return edge_marker
+
+    def get_segment_marker(self, a: Point2D, b: Point2D, color: ColorRGBA):
+        edge_marker = self.get_empty_segment_marker(color)
         edge_marker.points.append(Point(x=float(a.x), y=float(a.y), z=0.0))
         edge_marker.points.append(Point(x=float(b.x), y=float(b.y), z=0.0))
         return edge_marker
@@ -220,23 +236,48 @@ class Bug0Walker(Node):
         safety_margin_angle = math.atan2(end_point[1] - start_point[1], end_point[0] - start_point[0])
         safety_margin_x = 0.2 * math.cos(safety_margin_angle)
         safety_margin_y = 0.2 * math.sin(safety_margin_angle)
-        C = Point2D(start_point[0] - safety_margin_x, start_point[1] - safety_margin_y)
-        D = Point2D(end_point[0] + safety_margin_x, end_point[1] + safety_margin_y)
 
-        if intersect(A, B, C, D):
+        start_point_C = Point2D(start_point[0], start_point[1])
+        end_point_C = Point2D(end_point[0], end_point[1])
+        start_point_D = Point2D(start_point[0] - safety_margin_x, start_point[1] - safety_margin_y)
+        end_point_D = Point2D(end_point[0] + safety_margin_x, end_point[1] + safety_margin_y)
+
+        safety_edges = []
+        safety_edges.append([start_point_C, start_point_D])
+        safety_edges.append([end_point_C, end_point_D])
+
+        edges = []
+        for i in range(len(points) - 1):
+            edges.append((points[i], points[i+1]))
+        intersects = False
+        for edge in edges:
+            C = Point2D(edge[0][0], edge[0][1])
+            D = Point2D(edge[1][0], edge[1][1])
+            if intersect(A, B, C, D):
+                intersects = True
+                break
+
+        intersects = intersect(A, B, safety_edges[0][0], safety_edges[0][1]) or intersects
+        intersects = intersect(A, B, safety_edges[1][0], safety_edges[1][1]) or intersects
+
+        if intersects:
             # If the segment intersects with our vector to the GOAL we use
             # it as a new obstructive segment around which we need to go.
-            self.obstructive_segment = [C, D]
-            self.current_edges = []
-            for i in range(len(points) - 1):
-                self.current_edges.append((points[i], points[i+1]))
-
-            edge_marker = self.get_segment_marker(C, D, ColorRGBA(r=1.0, g=1.0, b=0.0, a=1.0))
-            self.edge_marker_pub.publish(edge_marker)
-
+            self.has_obstructive_segment = True
+            self.current_edges = edges
+            self.current_edge_safety_margins = safety_edges
+                
+            edge_marker_color = ColorRGBA(r=1.0, g=1.0, b=0.0, a=1.0)
         else:
-            edge_marker = self.get_segment_marker(C, D, ColorRGBA(r=1.0, g=0.0, b=0.0, a=1.0))
-            self.edge_marker_pub.publish(edge_marker)
+            edge_marker_color = ColorRGBA(r=1.0, g=0.0, b=0.0, a=1.0)
+
+        edge_marker = self.get_empty_segment_marker(edge_marker_color)
+        for i in range(len(points) - 1):
+            edge_marker.points.append(Point(x=points[i][0], y=points[i][1], z=0.0))
+            edge_marker.points.append(Point(x=points[i+1][0], y=points[i+1][1], z=0.0))
+        edge_marker.points.append(Point(x=start_point_D.x, y=start_point_D.y, z=0.0))
+        edge_marker.points.append(Point(x=end_point_D.x, y=end_point_D.y, z=0.0))
+        self.edge_marker_pub.publish(edge_marker)
 
 
     # This function is full copy from original edge_follower node
