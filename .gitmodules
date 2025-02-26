@@ -1,4 +1,6 @@
-
+[submodule "src/livox_ros_driver2"]
+	path = src/livox_ros_driver2
+	url = git@github.com:COMP0244-S25/livox_ros_driver2
 [submodule "src/unitree-go2-ros2"]
 	path = src/unitree-go2-ros2
 	url = git@github.com:COMP0244-S25/unitree-go2-ros2.git
